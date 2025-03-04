@@ -1,42 +1,61 @@
-import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import {
+    SidebarGroup,
+    SidebarGroupLabel,
+    SidebarMenu,
+    SidebarMenuButton,
+    SidebarMenuItem,
+    SidebarMenuSub,
+    SidebarMenuSubItem,
+} from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { LayoutGrid } from 'lucide-react';
+import { ChevronDown, LayoutGrid } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
 
 export function NavMain({ items = [] }: { items: NavItem[] }) {
-    const page = usePage();
+    const { url } = usePage();
     return (
         <SidebarGroup className="px-2 py-0">
             <SidebarGroupLabel>Platform</SidebarGroupLabel>
             <SidebarMenu>
+                {/* Regular menu item (non-collapsible) */}
                 <SidebarMenuItem>
-                    <SidebarMenuButton asChild isActive={'/dashboard' === page.url}>
+                    <SidebarMenuButton asChild isActive={'/dashboard' === url}>
                         <Link href="/dashboard" prefetch>
                             <LayoutGrid />
                             <span>Dashboard</span>
                         </Link>
                     </SidebarMenuButton>
                 </SidebarMenuItem>
-                {items.map((item, i) => (
-                    <Accordion type="single" key={i} collapsible>
-                        <AccordionItem value={'item-' + i}>
-                            <AccordionTrigger className={`${'/' + item.title === page.url ? 'bg-gray-200/50' : ''} p-2`}>
-                                <div className="flex items-center gap-2">
-                                    {item.icon && <item.icon size={16} />}
-                                    <span>{item.title}</span>
-                                </div>
-                            </AccordionTrigger>
-                            <AccordionContent className="ms-3 border-s bg-gray-50 pb-0">
-                                {item.listAccordion.map((subItem, j) => (
-                                    <Link key={j} href={route(subItem.url)} prefetch className="ms-6 list-item list-disc py-2">
-                                        {subItem.title}
-                                    </Link>
-                                ))}
-                            </AccordionContent>
+
+                {/* Accordion-based collapsible items */}
+                <Accordion type="single" collapsible className="py-0">
+                    {items.map((item, i) => (
+                        <AccordionItem key={i} value={`item-${i}`} className="border-0">
+                            <SidebarMenuItem className="my-0">
+                                <AccordionTrigger className="[&[data-state=open]>button]:bg-muted hover:no-underline">
+                                    <SidebarMenuButton>
+                                        {item.icon && <item.icon size={16} />}
+                                        <span>{item.title}</span>
+                                        <ChevronDown className="ml-auto h-4 w-4 transition-transform duration-200" />
+                                    </SidebarMenuButton>
+                                </AccordionTrigger>
+
+                                <AccordionContent className="pb-0">
+                                    <SidebarMenuSub>
+                                        {item.listAccordion.map((subItem, j) => (
+                                            <SidebarMenuSubItem key={j}>
+                                                <Link href={route(subItem.url)} prefetch className="ms-4 list-item list-disc py-1">
+                                                    {subItem.title}
+                                                </Link>
+                                            </SidebarMenuSubItem>
+                                        ))}
+                                    </SidebarMenuSub>
+                                </AccordionContent>
+                            </SidebarMenuItem>
                         </AccordionItem>
-                    </Accordion>
-                ))}
+                    ))}
+                </Accordion>
             </SidebarMenu>
         </SidebarGroup>
     );

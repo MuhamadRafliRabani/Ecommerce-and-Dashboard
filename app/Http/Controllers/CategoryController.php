@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
@@ -51,6 +52,16 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
-        //
+        try {
+            if ($category->image) {
+                Storage::delete($category->image);
+            }
+
+            $category->delete();
+
+            return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('errors', 'Category deleted failed.' . $th->getMessage());
+        }
     }
 }

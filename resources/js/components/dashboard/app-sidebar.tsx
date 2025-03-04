@@ -11,6 +11,7 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Products',
         icon: ShoppingCart,
+        path: 'products.index',
         listAccordion: [
             {
                 title: 'products',
@@ -25,6 +26,7 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Category',
         icon: Layers,
+        path: 'categories.index',
         listAccordion: [
             {
                 title: 'Category',
@@ -39,6 +41,7 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Brands',
         icon: Blocks,
+        path: 'brands.index',
         listAccordion: [
             {
                 title: 'Brands',
@@ -53,6 +56,7 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Orders',
         icon: Folders,
+        path: 'orders.index',
         listAccordion: [
             {
                 title: 'Orders',

@@ -24,6 +24,7 @@ export type subItem = {
 export interface NavItem {
     title: string;
     listAccordion: subItem[];
+    path: string;
     icon?: LucideIcon | null;
     isActive?: boolean;
 }

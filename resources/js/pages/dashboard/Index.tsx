@@ -17,7 +17,7 @@ export const breadcrumbs: BreadcrumbItem[] = [
     },
     {
         title: 'Products',
-        href: '/Products',
+        href: '/products',
     },
     {
         title: 'Category',
@@ -86,7 +86,7 @@ export default function Dashboard({ categories, orders }: Dashboards) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
             <section className="flex h-full flex-col gap-4 overflow-hidden rounded-xl p-4 py-2">
-                <div className="grid w-full auto-rows-min gap-2 md:grid-cols-4">
+                <div className="grid w-full auto-rows-min justify-items-center gap-2 md:grid-cols-4">
                     {dashboardStats.map((item: InfoDetail, i) => (
                         <React.Fragment key={i}>
                             <Info item={item} />
@@ -101,7 +101,7 @@ export default function Dashboard({ categories, orders }: Dashboards) {
                                 <span>Recenly Transtraction</span>
                                 <Clock className="size-8 stroke-black/50" strokeWidth={1} />
                             </CardTitle>
-                            <CardDescription>Transtraction in a mounth</CardDescription>
+                            <CardDescription>Transtraction in a month</CardDescription>
                         </CardHeader>
                         <DataTable columns={columnsDashboard} data={orders.data} links={orders.links} tableDefault={false} />
                     </Card>

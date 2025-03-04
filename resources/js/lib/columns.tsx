@@ -1,3 +1,4 @@
+import ConfirmationsDialog from '@/components/dialog';
 import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
@@ -9,9 +10,10 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Category } from '@/pages/dashboard/Categories/Index';
 import { Brand, Order, Product } from '@/types';
-import { Link, router } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import { MoreHorizontal } from 'lucide-react';
+import { toast } from 'sonner';
 
 // Definisi kolom sesuai dengan data yang diberikan
 export const columns: ColumnDef<Category>[] = [
@@ -36,10 +38,9 @@ export const columns: ColumnDef<Category>[] = [
         header: 'Actions',
         enableHiding: false,
         cell: ({ row }) => {
-            const handleDelete = () => {
-                if (confirm('Are you sure you want to delete this category?')) {
-                    router.delete(route('categories.destroy', row.original.id));
-                }
+            const handleCopy = () => {
+                navigator.clipboard.writeText(row.original.id);
+                toast.success('copied successfully');
             };
 
             return (
@@ -52,7 +53,7 @@ export const columns: ColumnDef<Category>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(row.original.id)}>Copy ID</DropdownMenuItem>
+                        <DropdownMenuItem onClick={handleCopy}>Copy ID</DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem asChild>
                             <Link href={route('categories.show', row.original.id)} className="flex items-center">
@@ -65,9 +66,13 @@ export const columns: ColumnDef<Category>[] = [
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem onClick={handleDelete} className="text-red-600">
-                            Delete Category
-                        </DropdownMenuItem>
+                        <ConfirmationsDialog
+                            title="are you sure want to delete this category"
+                            triger="Delete Category"
+                            description="Once this category is deleted, all of its resources and data will also be permanently deleted."
+                            path="categories.destroy"
+                            params={{ category: row.original.id }}
+                        />
                     </DropdownMenuContent>
                 </DropdownMenu>
             );
@@ -111,10 +116,9 @@ export const columnsProduct: ColumnDef<Product>[] = [
         header: 'Actions',
         enableHiding: false,
         cell: ({ row }) => {
-            const handleDelete = () => {
-                if (confirm('Are you sure you want to delete this category?')) {
-                    router.delete(route('products.destroy', row.original.id));
-                }
+            const handleCopy = () => {
+                navigator.clipboard.writeText(row.original.id);
+                toast.success('copied successfully');
             };
 
             return (
@@ -127,7 +131,7 @@ export const columnsProduct: ColumnDef<Product>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(row.original.id)}>Copy ID</DropdownMenuItem>
+                        <DropdownMenuItem onClick={handleCopy}>Copy ID</DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem asChild>
                             <Link href={route('products.show', row.original.id)} className="flex items-center">
@@ -136,13 +140,17 @@ export const columnsProduct: ColumnDef<Product>[] = [
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
                             <Link href={route('products.edit', row.original.id)} className="flex items-center">
-                                Edit Category
+                                Edit Products
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem onClick={handleDelete} className="text-red-600">
-                            Delete Category
-                        </DropdownMenuItem>
+                        <ConfirmationsDialog
+                            title="are you sure want to delete this Product"
+                            triger="Delete Product"
+                            description="Once this Product is deleted, all of its resources and data will also be permanently deleted."
+                            path="products.destroy"
+                            params={{ products: row.original.id }}
+                        />
                     </DropdownMenuContent>
                 </DropdownMenu>
             );
@@ -189,10 +197,9 @@ export const columnsBrands: ColumnDef<Brand>[] = [
         header: 'Actions',
         enableHiding: false,
         cell: ({ row }) => {
-            const handleDelete = () => {
-                if (confirm('Are you sure you want to delete this category?')) {
-                    router.delete(route('brands.destroy', row.original.id));
-                }
+            const handleCopy = () => {
+                navigator.clipboard.writeText(row.original.id);
+                toast.success('copied successfully');
             };
 
             return (
@@ -205,7 +212,7 @@ export const columnsBrands: ColumnDef<Brand>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(row.original.id)}>Copy ID</DropdownMenuItem>
+                        <DropdownMenuItem onClick={handleCopy}>Copy ID</DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem asChild>
                             <Link href={route('brands.show', row.original.id)} className="flex items-center">
@@ -218,9 +225,13 @@ export const columnsBrands: ColumnDef<Brand>[] = [
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem onClick={handleDelete} className="text-red-600">
-                            Delete Category
-                        </DropdownMenuItem>
+                        <ConfirmationsDialog
+                            title="are you sure want to delete this Brands"
+                            triger="Delete Brands"
+                            description="Once this Brands is deleted, all of its resources and data will also be permanently deleted."
+                            path="brands.destroy"
+                            params={{ brands: row.original.id }}
+                        />
                     </DropdownMenuContent>
                 </DropdownMenu>
             );
@@ -262,10 +273,9 @@ export const columnsOrders: ColumnDef<Order>[] = [
         header: 'Actions',
         enableHiding: false,
         cell: ({ row }) => {
-            const handleDelete = () => {
-                if (confirm('Are you sure you want to delete this category?')) {
-                    router.delete(route('brands.destroy', row.original.id));
-                }
+            const handleCopy = () => {
+                navigator.clipboard.writeText(row.original.id);
+                toast.success('copied successfully');
             };
 
             return (
@@ -278,7 +288,7 @@ export const columnsOrders: ColumnDef<Order>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(row.original.id)}>Copy ID</DropdownMenuItem>
+                        <DropdownMenuItem onClick={handleCopy}>Copy ID</DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem asChild>
                             <Link href={route('brands.show', row.original.id)} className="flex items-center">
@@ -291,9 +301,13 @@ export const columnsOrders: ColumnDef<Order>[] = [
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem onClick={handleDelete} className="text-red-600">
-                            Delete Category
-                        </DropdownMenuItem>
+                        <ConfirmationsDialog
+                            title="are you sure want to delete this order"
+                            triger="Delete orders"
+                            description="Once this order is deleted, all of its resources and data will also be permanently deleted."
+                            path="orders.destroy"
+                            params={{ orders: row.original.id }}
+                        />
                     </DropdownMenuContent>
                 </DropdownMenu>
             );
@@ -323,10 +337,9 @@ export const columnsDashboard: ColumnDef<Order>[] = [
         header: 'Actions',
         enableHiding: false,
         cell: ({ row }) => {
-            const handleDelete = () => {
-                if (confirm('Are you sure you want to delete this category?')) {
-                    router.delete(route('brands.destroy', row.original.id));
-                }
+            const handleCopy = () => {
+                navigator.clipboard.writeText(row.original.id);
+                toast.success('copied successfully');
             };
 
             return (
@@ -339,7 +352,7 @@ export const columnsDashboard: ColumnDef<Order>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(row.original.id)}>Copy ID</DropdownMenuItem>
+                        <DropdownMenuItem onClick={handleCopy}>Copy ID</DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem asChild>
                             <Link href={route('brands.show', row.original.id)} className="flex items-center">
@@ -352,9 +365,13 @@ export const columnsDashboard: ColumnDef<Order>[] = [
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem onClick={handleDelete} className="text-red-600">
-                            Delete Category
-                        </DropdownMenuItem>
+                        <ConfirmationsDialog
+                            title="are you sure want to delete this category"
+                            triger="Delete Category"
+                            description="Once this category is deleted, all of its resources and data will also be permanently deleted."
+                            path="categories.destroy"
+                            params={{ category: row.original.id }}
+                        />
                     </DropdownMenuContent>
                 </DropdownMenu>
             );

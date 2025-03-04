@@ -8,7 +8,7 @@ import AppLayout from '@/layouts/app-layout';
 import { useForm, usePage } from '@inertiajs/react';
 import { CloudUpload } from 'lucide-react';
 import React, { useState } from 'react';
-import { breadcrumbs } from '../dashboard/Index';
+import { breadcrumbs } from '../Index';
 
 const items = [
     { key: 'Nike', value: 1 },
