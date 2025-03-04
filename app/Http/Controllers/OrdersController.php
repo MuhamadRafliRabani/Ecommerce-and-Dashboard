@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use App\Models\Order;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
+use Illuminate\Support\Facades\Storage;
 
 class OrdersController extends Controller
 {
@@ -63,6 +64,16 @@ class OrdersController extends Controller
      */
     public function destroy(Order $orders)
     {
-        //
+        try {
+            if ($orders->image) {
+                Storage::delete($orders->image);
+            }
+
+            $orders->delete();
+
+            return redirect()->route('orders.index')->with('success', 'orders deleted successfully.');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('errors', 'orders deleted failed.' . $th->getMessage());
+        }
     }
 }

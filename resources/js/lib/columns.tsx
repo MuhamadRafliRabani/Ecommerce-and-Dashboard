@@ -230,7 +230,7 @@ export const columnsBrands: ColumnDef<Brand>[] = [
                             triger="Delete Brands"
                             description="Once this Brands is deleted, all of its resources and data will also be permanently deleted."
                             path="brands.destroy"
-                            params={{ brands: row.original.id }}
+                            params={{ brand: row.original.id }}
                         />
                     </DropdownMenuContent>
                 </DropdownMenu>
@@ -306,7 +306,7 @@ export const columnsOrders: ColumnDef<Order>[] = [
                             triger="Delete orders"
                             description="Once this order is deleted, all of its resources and data will also be permanently deleted."
                             path="orders.destroy"
-                            params={{ orders: row.original.id }}
+                            params={{ order: row.original.id }}
                         />
                     </DropdownMenuContent>
                 </DropdownMenu>

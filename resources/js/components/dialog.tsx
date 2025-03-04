@@ -15,15 +15,8 @@ type ConfirmProps = {
 const ConfirmationsDialog = ({ triger = 'delete', title, description, path, params = {} }: ConfirmProps) => {
     const [isOpen, setIsOpen] = useState(false);
 
-    const {
-        delete: destroy,
-        processing,
-        reset,
-        clearErrors,
-        errors,
-    } = useForm({
-        params,
-    });
+    const { delete: destroy, processing, reset, clearErrors, errors } = useForm(params);
+    // console.log('🚀 ~ ConfirmationsDialog ~ errors:', errors);
 
     const closeModal = () => {
         setIsOpen(false);
@@ -31,6 +24,7 @@ const ConfirmationsDialog = ({ triger = 'delete', title, description, path, para
         reset();
     };
 
+    // console.log('🚀 ~ destroy ~ path, params:', { path, params });
     const handleDelete = (e) => {
         e.preventDefault();
         destroy(route(path, params), {

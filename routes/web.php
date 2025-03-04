@@ -30,6 +30,8 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::resource('products', ProductController::class);
     Route::resource('brands', BrandsController::class);
     Route::resource('orders', OrdersController::class);
+
+    Route::delete('/brands/{brand}', [BrandsController::class, 'destroy'])->name('brands.destroy');
 });
 
 require __DIR__ . '/settings.php';

@@ -6,6 +6,7 @@ use Inertia\Inertia;
 use App\Models\Brand;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BrandsController extends Controller
 {
@@ -77,6 +78,16 @@ class BrandsController extends Controller
      */
     public function destroy(Brand $brands)
     {
-        //
+        try {
+            if ($brands->image) {
+                Storage::delete($brands->image);
+            }
+
+            $brands->delete();
+
+            return redirect()->route('brands.index')->with('success', 'Brands deleted successfully.');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('errors', 'Brands deleted failed.' . $th->getMessage());
+        }
     }
 }
