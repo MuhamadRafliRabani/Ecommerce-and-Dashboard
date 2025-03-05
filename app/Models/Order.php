@@ -20,7 +20,9 @@ class Order extends Model
         'status',
         'payment_method',
         'shipping_address',
-        'shipped_at'
+        'shipped_at',
+        'color'
+
     ];
 
     public function user(): BelongsTo

@@ -15,7 +15,29 @@ import { ColumnDef } from '@tanstack/react-table';
 import { MoreHorizontal } from 'lucide-react';
 import { toast } from 'sonner';
 
-// Definisi kolom sesuai dengan data yang diberikan
+const colors = {
+    red: 'bg-red-100 text-red-500',
+    blue: 'bg-blue-100 text-blue-500',
+    orange: 'bg-orange-100 text-orange-500',
+    green: 'bg-green-100 text-green-500',
+    yellow: 'bg-yellow-100 text-yellow-500',
+    emerald: 'bg-emerald-100 text-emerald-500',
+    teal: 'bg-teal-100 text-teal-500',
+    cyan: 'bg-cyan-100 text-cyan-500',
+    violet: 'bg-violet-100 text-violet-500',
+    purple: 'bg-purple-100 text-purple-500',
+    fuchsia: 'bg-fuchsia-100 text-fuchsia-500',
+    pink: 'bg-pink-100 text-pink-500',
+    rose: 'bg-rose-100 text-rose-500',
+    slate: 'bg-slate-100 text-slate-500',
+    gray: 'bg-gray-100 text-gray-500',
+    gold: 'bg-yellow-100 text-yellow-500',
+    navy: 'bg-blue-100 text-blue-500',
+    black: 'bg-gray-900 text-gray-100',
+    white: 'bg-white text-gray-500',
+    brown: 'bg-amber-100 text-amber-500',
+};
+
 export const columns: ColumnDef<Category>[] = [
     {
         accessorKey: 'id',
@@ -24,6 +46,7 @@ export const columns: ColumnDef<Category>[] = [
     {
         accessorKey: 'name',
         header: 'Name',
+        cell: ({ row }) => <Link href={route('categories.show', row.original.id)}>{row.original.name}</Link>,
     },
     {
         accessorKey: 'description',
@@ -86,26 +109,58 @@ export const columnsProduct: ColumnDef<Product>[] = [
         header: 'ID',
     },
     {
-        accessorKey: 'name',
         header: 'Name',
+        cell: ({ row }) => {
+            return <Link href={route('products.show', row.original.id)}>{row.original.name.slice(0, 25) + '...'}</Link>;
+        },
+    },
+    {
+        header: 'Descriptions',
+        cell: ({ row }) => {
+            return row.original.description.slice(0, 25) + '...';
+        },
     },
     {
         accessorKey: 'price',
         header: 'Price',
+        cell: ({ row }) => {
+            return `$${row.original.price.toFixed(2)}`;
+        },
     },
     {
         header: 'Image',
         cell: ({ row }) => {
-            return <img src={'storage/' + row.original.image} alt={row.original.name} className="size-10 rounded-md object-cover md:size-14" />;
+            // return <img src={'storage/' + row.original.image} alt={row.original.name} className="size-10 rounded-md object-cover md:size-14" />;
+            return <img src={'https://placehold.co/400x400/png'} alt={row.original.name} className="size-10 rounded-md object-cover md:size-14" />;
         },
     },
     {
         accessorKey: 'category.name',
         header: 'Category',
+        cell: ({ row }) => {
+            return (
+                <Link
+                    href={route('categories.show', row.original.category_id)}
+                    className={`border-slide [--colorBorder: ${colors[row.original.category?.color || '']}] rounded p-1.5 text-sm [--origin:right] ${colors[row.original.category?.color || '']}`}
+                >
+                    {row.original.category?.name.slice(0, 7)}
+                </Link>
+            );
+        },
     },
     {
         accessorKey: 'brand.name',
         header: 'Brand',
+        cell: ({ row }) => {
+            return (
+                <Link
+                    href={route('brands.show', row.original.brand_id)}
+                    className={`border-slide [--colorBorder: bg-blend-color ${colors[row.original.brand?.color || '']}] rounded p-1.5 text-sm [--origin:right] ${colors[row.original.brand?.color]}`}
+                >
+                    {row.original.brand?.name}
+                </Link>
+            );
+        },
     },
     {
         accessorKey: 'Quantity',
@@ -149,7 +204,7 @@ export const columnsProduct: ColumnDef<Product>[] = [
                             triger="Delete Product"
                             description="Once this Product is deleted, all of its resources and data will also be permanently deleted."
                             path="products.destroy"
-                            params={{ products: row.original.id }}
+                            params={{ product: row.original.id }}
                         />
                     </DropdownMenuContent>
                 </DropdownMenu>
@@ -166,6 +221,7 @@ export const columnsBrands: ColumnDef<Brand>[] = [
     {
         accessorKey: 'name',
         header: 'Name',
+        cell: ({ row }) => <Link href={route('brands.show', row.original.id)}>{row.original.name}</Link>,
     },
     {
         accessorKey: 'slug',
@@ -186,7 +242,7 @@ export const columnsBrands: ColumnDef<Brand>[] = [
         header: 'Website',
         cell: ({ row }) => {
             return (
-                <Link href={row.original.website} target="_blank" className="hover:underline" rel="noopener noreferrer">
+                <Link href={row.original.website} target="_blank" className="border-slide [--origin:right]" rel="noopener noreferrer">
                     {row.original.name}
                 </Link>
             );

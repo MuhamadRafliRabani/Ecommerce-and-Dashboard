@@ -1,4 +1,5 @@
 import { useForm } from '@inertiajs/react';
+import { LoaderCircle } from 'lucide-react';
 import { useState } from 'react'; // Add useState
 import { toast } from 'sonner';
 import { Button } from './ui/button';
@@ -60,8 +61,9 @@ const ConfirmationsDialog = ({ triger = 'delete', title, description, path, para
                     </DialogClose>
 
                     {/* Remove asChild from this Button */}
-                    <Button variant="destructive" disabled={processing} onClick={handleDelete}>
+                    <Button variant="destructive" className="relative" disabled={processing} onClick={handleDelete}>
                         {triger}
+                        {processing && <LoaderCircle className="size-4 animate-spin" />}
                     </Button>
                 </DialogFooter>
             </DialogContent>

@@ -1,3 +1,4 @@
+import { Category } from '@/pages/dashboard/Categories/Index';
 import { LucideIcon } from 'lucide-react';
 import { ElementType } from 'react';
 
@@ -85,10 +86,12 @@ export interface Product {
     slug: string;
     description: string;
     category_id: number;
-    brand: string;
+    brand_id: number;
     stock: number;
     Quantity: number;
     order: Order[];
+    category?: Category;
+    brand: Brand;
 }
 
 export interface Brand {
@@ -98,6 +101,7 @@ export interface Brand {
     image: string;
     website: string;
     product: Product[];
+    color: string;
 }
 
 export interface Order {

@@ -19,7 +19,7 @@ export function Chart({ chartData, chartDescription = 'January - June 2024', ana
     const chartConfig = {
         value: {
             label: 'products',
-            color: 'hsl(0, 0%, 9%)',
+            color: 'hsl(var(--chart-1))',
             icon: ShoppingBag,
         },
     } satisfies ChartConfig;
@@ -39,11 +39,11 @@ export function Chart({ chartData, chartDescription = 'January - June 2024', ana
                         className="min-w-fit bg-yellow-300"
                         tickMargin={5}
                         axisLine={false}
-                        tickFormatter={(value) => value.slice(0, 7)}
+                        tickFormatter={(value) => value.slice(0, 4)}
                     />
                     <YAxis dataKey="value" />
-                    <ChartTooltip cursor={true} content={<ChartTooltipContent indicator="dot" />} />
-                    <Bar dataKey="value" fill="var(--color-value)" radius={4} />
+                    <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dot" />} />
+                    <Bar dataKey="value" className="fill-primary dark:fill-[--color-value]" radius={4} />
                 </BarChart>
             </ChartContainer>
             <CardFooter className="flex-col items-start gap-2 text-sm">

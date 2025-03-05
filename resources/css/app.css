@@ -111,6 +111,7 @@
     --sidebar-accent-foreground: hsl(0, 0%, 30%);
     --sidebar-border: hsl(0, 0%, 91%);
     --sidebar-ring: hsl(217.2, 91.2%, 59.8%);
+    --colorBorder: ;
 }
 
 .dark {
@@ -214,14 +215,14 @@
     }
 }
 
-/* body {
-    font-family: 'Nunito Sans', sans-serif;
+body {
+    font-family: 'Inter', sans-serif;
     font-optical-sizing: auto;
     font-style: normal;
     font-variation-settings:
         'wdth' 100,
         'YTLC' 500;
-} */
+}
 
 .border-slide {
     position: relative;
@@ -233,7 +234,7 @@
     right: 0;
     bottom: 0;
     position: absolute;
-    border-bottom: 1px solid var(--primary, 'black');
+    border-bottom: 1px solid var(--colorBorder);
     transform: scaleX(0);
     transform-origin: var(--origin, right);
     width: 100%;

@@ -24,7 +24,7 @@ export function ContentLayout<T>({ title, description, data, columns, chartData,
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={title} />
             <div className="px-4">
-                <CardHeader className="px-2 pb-3">
+                <CardHeader className="px-2 pb-3 md:px-8">
                     <CardTitle className="border-slide block w-fit [--origin:left]">{title}</CardTitle>
                     <CardDescription className="flex max-w-[320px] items-end justify-between space-x-4 text-pretty overflow-ellipsis md:max-w-full md:items-center">
                         {description?.substring(0, 22)}

@@ -39,6 +39,18 @@ type Dashboards = {
 };
 
 export default function Dashboard({ categories, orders }: Dashboards) {
+    const TotalAmount = orders.data.reduce((prev, current) => {
+        return current.status == 'delivered' ? prev + current.total_price : prev;
+    }, 0);
+
+    const TotalPrice = orders.data.reduce((prev, current) => {
+        return prev + current.total_price;
+    }, 0);
+
+    const TotalCencled = orders.data.reduce((prev, current) => {
+        return current.status == 'canceled' ? prev + 1 : prev;
+    }, 0);
+
     const chartData: chartDataProsp[] = categories.map(({ name, product }) => ({
         key: name,
         value: product.length,
@@ -62,23 +74,23 @@ export default function Dashboard({ categories, orders }: Dashboards) {
     const dashboardStats: InfoDetail[] = [
         {
             title: 'Total Orders',
-            icon: ShoppingBag, // Bisa diganti dengan icon sesuai kebutuhan
+            icon: ShoppingBag,
             value: '+' + orders.data.length,
         },
         {
             title: 'Total Amount',
             icon: DollarSign,
-            value: '$0',
+            value: '$' + TotalPrice.toFixed(2),
         },
         {
             title: 'Delivered Orders Amount',
             icon: DollarSign,
-            value: '$0',
+            value: '$' + TotalAmount.toFixed(2),
         },
         {
             title: 'Canceled Orders',
             icon: Box,
-            value: '+0',
+            value: '+' + TotalCencled,
         },
     ];
 

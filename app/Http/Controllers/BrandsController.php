@@ -52,9 +52,11 @@ class BrandsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Brand $brands)
+    public function show(Brand $brand)
     {
-        //
+        $products = $brand->product()->with(['category', 'brand'])->latest()->paginate(10);
+
+        return Inertia::render('dashboard/Brands/Show', ['products' => $products, 'name' => $brand->name]);
     }
 
     /**
@@ -76,14 +78,16 @@ class BrandsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Brand $brands)
+    public function destroy(Brand $brand)
     {
         try {
-            if ($brands->image) {
-                Storage::delete($brands->image);
+
+            // dd($brand);
+            if ($brand->image) {
+                Storage::delete($brand->image);
             }
 
-            $brands->delete();
+            $brand->delete();
 
             return redirect()->route('brands.index')->with('success', 'Brands deleted successfully.');
         } catch (\Throwable $th) {

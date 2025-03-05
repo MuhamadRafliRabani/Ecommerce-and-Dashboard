@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('payment_method')->nullable();
             $table->text('shipping_address');
             $table->timestamp('shipped_at')->nullable();
+            $table->string('color')->nullable();
             $table->timestamps();
         });
     }

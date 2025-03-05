@@ -37,7 +37,7 @@ export function NavMain({ items = [] }: { items: NavItem[] }) {
                                     <SidebarMenuButton>
                                         {item.icon && <item.icon size={16} />}
                                         <span>{item.title}</span>
-                                        <ChevronDown className="ml-auto h-4 w-4 transition-transform duration-200" />
+                                        <ChevronDown className="ml-auto size-4 transition-transform duration-200" />
                                     </SidebarMenuButton>
                                 </AccordionTrigger>
 
@@ -45,7 +45,11 @@ export function NavMain({ items = [] }: { items: NavItem[] }) {
                                     <SidebarMenuSub>
                                         {item.listAccordion.map((subItem, j) => (
                                             <SidebarMenuSubItem key={j}>
-                                                <Link href={route(subItem.url)} prefetch className="ms-4 list-item list-disc py-1">
+                                                <Link
+                                                    href={route(subItem.url)}
+                                                    prefetch
+                                                    className="ms-4 list-item list-disc rounded-md py-1 ps-1 hover:bg-gray-200/10 hover:text-white"
+                                                >
                                                     {subItem.title}
                                                 </Link>
                                             </SidebarMenuSubItem>

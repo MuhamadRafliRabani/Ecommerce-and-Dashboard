@@ -13,7 +13,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::with('product')->paginate(10);
+        $categories = Category::with('product')->latest()->paginate(10);
         $totalCategories = Category::count();
         return Inertia::render('dashboard/Categories/Index', ['categories' => $categories, 'totalCategories' => $totalCategories]);
     }
@@ -37,7 +37,9 @@ class CategoryController extends Controller
 
     public function show(Category $category)
     {
-        //
+        $products = $category->product()->with(['category', 'brand'])->latest()->paginate(10);
+
+        return Inertia::render('dashboard/Categories/Show', ['products' => $products, 'name' => $category->name]);
     }
 
     public function edit(Category $category)

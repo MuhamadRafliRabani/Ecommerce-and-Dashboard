@@ -9,6 +9,7 @@ export type Category = {
     name: string;
     slug: string;
     product: Product[];
+    color: string;
 };
 
 type categoryProps = { categories: PaginatedResponse<Category>; totalCategories: number };
