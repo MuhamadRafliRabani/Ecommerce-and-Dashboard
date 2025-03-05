@@ -92,6 +92,8 @@ export interface Product {
     order: Order[];
     category?: Category;
     brand: Brand;
+    user: User;
+    created_at: string;
 }
 
 export interface Brand {

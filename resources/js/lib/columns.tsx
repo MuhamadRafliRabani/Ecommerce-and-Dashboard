@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Category } from '@/pages/dashboard/Categories/Index';
+import ProductDetail from '@/pages/dashboard/products/Show';
 import { Brand, Order, Product } from '@/types';
 import { Link } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
@@ -200,9 +201,13 @@ export const columnsProduct: ColumnDef<Product>[] = [
                         <DropdownMenuItem onClick={handleCopy}>Copy ID</DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem asChild>
-                            <Link href={route('products.show', row.original.id)} className="flex items-center">
-                                View Details
-                            </Link>
+                            <Sheet>
+                                <SheetTrigger className="flex items-center p-1.5 text-sm">View Details</SheetTrigger>
+
+                                <SheetContent>
+                                    <ProductDetail data={row.original} />
+                                </SheetContent>
+                            </Sheet>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
                             <Link href={route('products.edit', row.original.id)} className="flex items-center">
@@ -363,7 +368,7 @@ export const columnsOrders: ColumnDef<Order>[] = [
                             <Sheet>
                                 <SheetTrigger className="flex items-center p-1.5 text-sm">View Details</SheetTrigger>
 
-                                <SheetContent>
+                                <SheetContent className="overflow-x-hidden overflow-y-scroll">
                                     <OrderDetails data={row.original} />
                                 </SheetContent>
                             </Sheet>
