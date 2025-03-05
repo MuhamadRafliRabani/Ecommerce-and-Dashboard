@@ -1,3 +1,4 @@
+import OrderDetails from '@/components/dashboard/deteil-orders';
 import ConfirmationsDialog from '@/components/dialog';
 import { Button } from '@/components/ui/button';
 import {
@@ -8,6 +9,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Category } from '@/pages/dashboard/Categories/Index';
 import { Brand, Order, Product } from '@/types';
 import { Link } from '@inertiajs/react';
@@ -46,11 +48,16 @@ export const columns: ColumnDef<Category>[] = [
     {
         accessorKey: 'name',
         header: 'Name',
-        cell: ({ row }) => <Link href={route('categories.show', row.original.id)}>{row.original.name}</Link>,
+        cell: ({ row }) => (
+            <Link href={route('categories.show', row.original.id)} className="width-animated block w-[100px] truncate whitespace-nowrap">
+                {row.original.name}
+            </Link>
+        ),
     },
     {
         accessorKey: 'description',
         header: 'Description',
+        cell: ({ row }) => <p className="width-animated block w-[200px] truncate whitespace-nowrap">{row.original.description}</p>,
     },
     {
         accessorKey: 'product.length',
@@ -111,13 +118,17 @@ export const columnsProduct: ColumnDef<Product>[] = [
     {
         header: 'Name',
         cell: ({ row }) => {
-            return <Link href={route('products.show', row.original.id)}>{row.original.name.slice(0, 25) + '...'}</Link>;
+            return (
+                <Link href={route('products.show', row.original.id)} className="width-animated block w-[100px] truncate whitespace-nowrap">
+                    {row.original.name}
+                </Link>
+            );
         },
     },
     {
         header: 'Descriptions',
         cell: ({ row }) => {
-            return row.original.description.slice(0, 25) + '...';
+            return <p className="width-animated block w-[200px] truncate whitespace-nowrap hover:max-w-[350px]">{row.original.description}</p>;
         },
     },
     {
@@ -143,7 +154,7 @@ export const columnsProduct: ColumnDef<Product>[] = [
                     href={route('categories.show', row.original.category_id)}
                     className={`border-slide [--colorBorder: ${colors[row.original.category?.color || '']}] rounded p-1.5 text-sm [--origin:right] ${colors[row.original.category?.color || '']}`}
                 >
-                    {row.original.category?.name.slice(0, 7)}
+                    {row.original.category?.name.slice(0, 12)}
                 </Link>
             );
         },
@@ -311,10 +322,12 @@ export const columnsOrders: ColumnDef<Order>[] = [
     {
         accessorKey: 'order_number',
         header: 'Order Number',
+        cell: ({ row }) => '#' + row.original.order_number,
     },
     {
         accessorKey: 'total_price',
         header: 'Total Price',
+        cell: ({ row }) => `$${row.original.total_price.toFixed(2)}`,
     },
     {
         accessorKey: 'status',
@@ -347,12 +360,16 @@ export const columnsOrders: ColumnDef<Order>[] = [
                         <DropdownMenuItem onClick={handleCopy}>Copy ID</DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem asChild>
-                            <Link href={route('brands.show', row.original.id)} className="flex items-center">
-                                View Details
-                            </Link>
+                            <Sheet>
+                                <SheetTrigger className="flex items-center p-1.5 text-sm">View Details</SheetTrigger>
+
+                                <SheetContent>
+                                    <OrderDetails data={row.original} />
+                                </SheetContent>
+                            </Sheet>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
-                            <Link href={route('brands.edit', row.original.id)} className="flex items-center">
+                            <Link href={route('orders.edit', row.original.id)} className="flex items-center">
                                 Edit Category
                             </Link>
                         </DropdownMenuItem>
@@ -375,6 +392,7 @@ export const columnsDashboard: ColumnDef<Order>[] = [
     {
         accessorKey: 'order_number',
         header: 'Invoice',
+        cell: ({ row }) => row.original.order_number,
     },
     {
         accessorKey: 'status',
@@ -387,6 +405,7 @@ export const columnsDashboard: ColumnDef<Order>[] = [
     {
         accessorKey: 'total_price',
         header: 'Amount',
+        cell: ({ row }) => `$${row.original.total_price.toFixed(2)}`,
     },
     {
         id: 'actions',
@@ -411,9 +430,13 @@ export const columnsDashboard: ColumnDef<Order>[] = [
                         <DropdownMenuItem onClick={handleCopy}>Copy ID</DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem asChild>
-                            <Link href={route('brands.show', row.original.id)} className="flex items-center">
-                                View Details
-                            </Link>
+                            <Sheet>
+                                <SheetTrigger className="flex items-center p-1.5 text-sm">View Details</SheetTrigger>
+
+                                <SheetContent>
+                                    <OrderDetails data={row.original} />
+                                </SheetContent>
+                            </Sheet>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
                             <Link href={route('brands.edit', row.original.id)} className="flex items-center">

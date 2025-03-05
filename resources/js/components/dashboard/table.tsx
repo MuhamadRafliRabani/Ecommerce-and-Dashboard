@@ -20,7 +20,7 @@ export function DataTable<TData, TValue>({ columns, data, links, tableDefault = 
 
     return (
         <div className={`${tableDefault ? 'rounded-md border' : ''} w-full px-4`}>
-            <Table>
+            <Table className="overflow-x-auto">
                 <TableHeader>
                     {table.getHeaderGroups().map((headerGroup) => (
                         <TableRow key={headerGroup.id}>

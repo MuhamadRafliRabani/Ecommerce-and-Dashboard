@@ -25,7 +25,7 @@ export function Chart({ chartData, chartDescription = 'January - June 2024', ana
     } satisfies ChartConfig;
 
     return (
-        <Card className="h-full w-full min-w-auto px-0">
+        <Card className="h-full w-auto min-w-auto px-0">
             <CardHeader>
                 <CardTitle>Bar Chart - Multiple</CardTitle>
                 <CardDescription>{chartDescription}</CardDescription>

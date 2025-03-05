@@ -7,56 +7,37 @@ import { columnsDashboard } from '@/lib/columns';
 import { analiticsProsp, BreadcrumbItem, chartDataProsp, InfoDetail, Order, PaginatedResponse } from '@/types';
 import { Head } from '@inertiajs/react';
 import { Box, Clock, DollarSign, Layers, ShoppingBag } from 'lucide-react';
-import React from 'react';
+import { useMemo } from 'react';
 import { Category } from './Categories/Index';
 
 export const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Dashboard',
-        href: '/dashboard',
-    },
-    {
-        title: 'Products',
-        href: '/products',
-    },
-    {
-        title: 'Category',
-        href: '/categories',
-    },
-    {
-        title: 'Brands',
-        href: '/brands',
-    },
-    {
-        title: 'Orders',
-        href: '/orders',
-    },
+    { title: 'Dashboard', href: '/dashboard' },
+    { title: 'Products', href: '/products' },
+    { title: 'Category', href: '/categories' },
+    { title: 'Brands', href: '/brands' },
+    { title: 'Orders', href: '/orders' },
 ];
 
-type Dashboards = {
+type DashboardsProps = {
     categories: Category[];
     orders: PaginatedResponse<Order>;
 };
 
-export default function Dashboard({ categories, orders }: Dashboards) {
-    const TotalAmount = orders.data.reduce((prev, current) => {
-        return current.status == 'delivered' ? prev + current.total_price : prev;
-    }, 0);
-
-    const TotalPrice = orders.data.reduce((prev, current) => {
-        return prev + current.total_price;
-    }, 0);
-
-    const TotalCencled = orders.data.reduce((prev, current) => {
-        return current.status == 'canceled' ? prev + 1 : prev;
-    }, 0);
+export default function Dashboard({ categories, orders }: DashboardsProps) {
+    const { totalAmount, totalPrice, totalCanceled } = useMemo(() => {
+        return {
+            totalAmount: orders.data.reduce((prev, order) => (order.status === 'delivered' ? prev + order.total_price : prev), 0),
+            totalPrice: orders.data.reduce((prev, order) => prev + order.total_price, 0),
+            totalCanceled: orders.data.filter((order) => order.status === 'canceled').length,
+        };
+    }, [orders]);
 
     const chartData: chartDataProsp[] = categories.map(({ name, product }) => ({
         key: name,
         value: product.length,
     }));
 
-    const analitics: analiticsProsp[] = [
+    const analytics: analiticsProsp[] = [
         {
             labels: 'Total products',
             value: categories.reduce((sum, { product }) => sum + product.length, 0),
@@ -75,50 +56,63 @@ export default function Dashboard({ categories, orders }: Dashboards) {
         {
             title: 'Total Orders',
             icon: ShoppingBag,
-            value: '+' + orders.data.length,
+            value: `+${orders.data.length}`,
         },
         {
             title: 'Total Amount',
             icon: DollarSign,
-            value: '$' + TotalPrice.toFixed(2),
+            value: `$${totalPrice.toFixed(2)}`,
         },
         {
             title: 'Delivered Orders Amount',
             icon: DollarSign,
-            value: '$' + TotalAmount.toFixed(2),
+            value: `$${totalAmount.toFixed(2)}`,
         },
         {
             title: 'Canceled Orders',
             icon: Box,
-            value: '+' + TotalCencled,
+            value: `+${totalCanceled}`,
         },
     ];
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
-            <section className="flex h-full flex-col gap-4 overflow-hidden rounded-xl p-4 py-2">
-                <div className="grid w-full auto-rows-min justify-items-center gap-2 md:grid-cols-4">
-                    {dashboardStats.map((item: InfoDetail, i) => (
-                        <React.Fragment key={i}>
-                            <Info item={item} />
-                        </React.Fragment>
-                    ))}
-                </div>
+            <section className="flex h-full flex-col gap-4 overflow-hidden rounded-xl p-2.5 py-2">
+                <InfoCards stats={dashboardStats} />
+
                 <div className="flex w-full flex-col items-center justify-center gap-4 overflow-hidden px-0 md:flex-row">
-                    <Chart analitics={analitics} chartData={chartData} chartDescription="show all current products" />
-                    <Card className="h-full min-w-2/5 pt-2 shadow">
-                        <CardHeader className="-space-y-0.5 py-2">
-                            <CardTitle className="flex items-center justify-between">
-                                <span>Recenly Transtraction</span>
-                                <Clock className="size-8 stroke-black/50" strokeWidth={1} />
-                            </CardTitle>
-                            <CardDescription>Transtraction in a month</CardDescription>
-                        </CardHeader>
-                        <DataTable columns={columnsDashboard} data={orders.data} links={orders.links} tableDefault={false} />
-                    </Card>
+                    <ChartSection analytics={analytics} chartData={chartData} />
+                    <TransactionTable orders={orders} />
                 </div>
             </section>
         </AppLayout>
     );
 }
+
+const InfoCards = ({ stats }: { stats: InfoDetail[] }) => (
+    <div className="grid w-full auto-rows-min justify-items-center gap-2 md:grid-cols-4">
+        {stats.map((item, i) => (
+            <Info key={i} item={item} />
+        ))}
+    </div>
+);
+
+const ChartSection = ({ analytics, chartData }: { analytics: analiticsProsp[]; chartData: chartDataProsp[] }) => (
+    <div className="w-full">
+        <Chart analitics={analytics} chartData={chartData} chartDescription="Show all current products" />
+    </div>
+);
+
+const TransactionTable = ({ orders }: { orders: PaginatedResponse<Order> }) => (
+    <Card className="h-full w-full pt-2 shadow md:min-w-2/5">
+        <CardHeader className="-space-y-0.5 py-2">
+            <CardTitle className="flex items-center justify-between">
+                <span>Recent Transactions</span>
+                <Clock className="size-8 stroke-black/50" strokeWidth={1} />
+            </CardTitle>
+            <CardDescription>Transactions in a month</CardDescription>
+        </CardHeader>
+        <DataTable columns={columnsDashboard} data={orders.data} links={orders.links} tableDefault={false} />
+    </Card>
+);

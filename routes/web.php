@@ -21,7 +21,7 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::get('/dashboard', function () {
 
         $categories = Category::with('product')->get();
-        $orders = Order::paginate(5);
+        $orders = Order::with(['user', 'product'])->paginate(5);
 
         return Inertia::render('dashboard/Index', ['categories' => $categories, 'orders' => $orders]);
     })->name('dashboard');

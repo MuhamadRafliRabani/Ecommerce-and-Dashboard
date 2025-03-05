@@ -78,6 +78,7 @@
 }
 
 :root {
+    interpolate-size: allow-keywords;
     --background: hsl(0, 0%, 100%);
     --foreground: hsl(0, 0%, 3.9%);
     --card: hsl(0, 0%, 100%);
@@ -247,5 +248,13 @@ body {
     }
     100% {
         transform: scaleX(1);
+    }
+}
+
+.width-animated {
+    transition: width 0.3s ease;
+
+    &:hover {
+        width: fit-content;
     }
 }

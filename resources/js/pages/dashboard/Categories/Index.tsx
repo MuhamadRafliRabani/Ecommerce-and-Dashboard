@@ -10,13 +10,13 @@ export type Category = {
     slug: string;
     product: Product[];
     color: string;
+    description?: string;
 };
 
 type categoryProps = { categories: PaginatedResponse<Category>; totalCategories: number };
 
 const Index = () => {
     const { categories, totalCategories } = usePage<categoryProps>().props;
-    console.log('🚀 ~ Index ~ totalCategories:', totalCategories);
 
     const chartData: chartDataProsp[] = categories.data?.map(({ name, product }) => ({
         key: name,

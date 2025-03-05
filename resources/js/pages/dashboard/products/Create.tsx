@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import { useForm, usePage } from '@inertiajs/react';
 import { CloudUpload } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { breadcrumbs } from '../Index';
 
 const items = [
@@ -50,103 +50,89 @@ const Create = () => {
         quantity: 1,
     });
 
-    // console.log({ category: data.category_id, brands: data.brand_id });
+    const handleImageUpload = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            const file = e.target.files?.[0];
+            if (file) {
+                setData('image', file);
+                setImagePreview(URL.createObjectURL(file));
+            }
+        },
+        [setData],
+    );
 
-    console.log(data);
-
-    console.log(errors);
-
-    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            setData('image', file);
-            setImagePreview(URL.createObjectURL(file));
-        }
-    };
-
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        post(route('products.store'));
-    };
+    const handleSubmit = useCallback(
+        (e: React.FormEvent<HTMLFormElement>) => {
+            e.preventDefault();
+            post(route('products.store'));
+        },
+        [post],
+    );
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <img src="{{ asset('images/1740900241_screenshot-2025-03-02-141348png' ) }}" alt="" />
             <form onSubmit={handleSubmit} className="h-full w-full gap-4 md:flex md:p-4">
-                {/* Left Column */}
                 <Card className="md:w-1/2">
                     <CardHeader className="pb-2">
                         <CardTitle>Create Product</CardTitle>
                         <CardDescription>Create a new product</CardDescription>
                     </CardHeader>
                     <CardContent className="flex flex-col space-y-4">
-                        {/* Product Name */}
-                        <div>
-                            <Label htmlFor="name">Title</Label>
-                            <Input
-                                placeholder="Enter product title"
-                                type="text"
-                                name="name"
-                                value={data.name}
-                                onChange={(e) => setData('name', e.target.value)}
-                            />
-                            {errors.name ? <InputError message={errors.name} /> : null}
-                        </div>
+                        <InputGroup
+                            label="Title"
+                            required
+                            name="name"
+                            placeholder="Enter product title"
+                            value={data.name}
+                            onChange={(e) => setData('name', e.target.value)}
+                            error={errors.name}
+                        />
 
-                        {/* Price */}
-                        <div>
-                            <Label htmlFor="price">Price</Label>
-                            <Input
-                                placeholder="Enter price"
-                                type="number"
-                                name="price"
-                                value={data.price}
-                                onChange={(e) => setData('price', e.target.value)}
-                            />
-                            {errors.price ? <InputError message={errors.price} /> : null}
-                        </div>
+                        <InputGroup
+                            label="Price"
+                            required
+                            name="price"
+                            placeholder="Enter price"
+                            type="number"
+                            value={data.price}
+                            onChange={(e) => setData('price', e.target.value)}
+                            error={errors.price}
+                        />
 
-                        {/* Brand and Category Selection */}
                         <div className="flex flex-row gap-4">
-                            <div className="flex-1">
-                                <Label htmlFor="brand_id">Brand</Label>
-                                <AppSelect
-                                    title="brand_id"
-                                    items={items} // Isi dengan data brands
-                                    onChange={setData}
-                                    placeholder="Nike"
-                                    selectedValue={data.brand_id}
-                                />
-                                {errors.brand_id ? <InputError message={errors.brand_id} /> : null}
-                            </div>
-
-                            <div className="flex-1">
-                                <Label htmlFor="category_id">Category</Label>
-                                <AppSelect
-                                    title="category_id"
-                                    items={categories} // Isi dengan data categories
-                                    onChange={setData}
-                                    placeholder="Electronics"
-                                    selectedValue={data.category_id}
-                                />
-                                {errors.category_id ? <InputError message={errors.category_id} /> : null}
-                            </div>
-                        </div>
-
-                        <div>
-                            <Label htmlFor="Quantity">Quantity</Label>
-                            <Input
-                                placeholder="Enter Quantity"
-                                type="number"
-                                name="Quantity"
-                                onChange={(e) => setData('quantity', Number(e.target.value))}
+                            <SelectGroup
+                                label="Brand"
+                                required
+                                name="brand_id"
+                                items={items}
+                                selectedValue={data.brand_id}
+                                onChange={setData}
+                                error={errors.brand_id}
                             />
-                            {errors.quantity ? <InputError message={errors.quantity} /> : null}
+                            <SelectGroup
+                                label="Category"
+                                required
+                                name="category_id"
+                                items={categories}
+                                selectedValue={data.category_id}
+                                onChange={setData}
+                                error={errors.category_id}
+                            />
                         </div>
 
-                        {/* Description */}
+                        <InputGroup
+                            label="Quantity"
+                            required
+                            name="quantity"
+                            placeholder="Enter quantity"
+                            type="number"
+                            value={data.quantity}
+                            onChange={(e) => setData('quantity', Number(e.target.value))}
+                            error={errors.quantity}
+                        />
+
                         <div>
-                            <Label htmlFor="description">Description</Label>
+                            <Label htmlFor="description">Description (Optional)</Label>
                             <textarea
                                 placeholder="Product description"
                                 className="h-40 w-full rounded-md border p-4"
@@ -154,19 +140,17 @@ const Create = () => {
                                 value={data.description}
                                 onChange={(e) => setData('description', e.target.value)}
                             />
-                            {errors.description ? <InputError message={errors.description} /> : null}
+                            {errors.description && <InputError message={errors.description} />}
                         </div>
                     </CardContent>
                 </Card>
 
-                {/* Right Column */}
                 <Card className="md:w-1/2">
                     <CardHeader className="pb-2">
                         <CardTitle>Product Images</CardTitle>
                         <CardDescription>Add product images</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                        {/* Image Upload */}
                         <div>
                             <Label htmlFor="image" className="cursor-pointer">
                                 {imagePreview ? (
@@ -184,10 +168,9 @@ const Create = () => {
                                 )}
                             </Label>
                             <input type="file" id="image" className="hidden" onChange={handleImageUpload} accept="image/*" />
-                            {errors.image ? <InputError message={errors.image} /> : null}
+                            {errors.image && <InputError message={errors.image} />}
                         </div>
 
-                        {/* Submit Button */}
                         <Button type="submit" className="w-full" disabled={processing}>
                             {processing ? 'Processing...' : 'Create Product'}
                         </Button>
@@ -197,5 +180,25 @@ const Create = () => {
         </AppLayout>
     );
 };
+
+const InputGroup = ({ label, required, error, ...props }) => (
+    <div>
+        <Label htmlFor={props.name}>
+            {label} {required && <span className="text-red-400">*</span>}
+        </Label>
+        <Input {...props} />
+        {error && <InputError message={error} />}
+    </div>
+);
+
+const SelectGroup = ({ label, required, items, selectedValue, onChange, name, error }) => (
+    <div className="flex-1">
+        <Label htmlFor={name}>
+            {label} {required && <span className="text-red-400">*</span>}
+        </Label>
+        <AppSelect title={name} items={items} selectedValue={selectedValue} onChange={onChange} />
+        {error && <InputError message={error} />}
+    </div>
+);
 
 export default Create;

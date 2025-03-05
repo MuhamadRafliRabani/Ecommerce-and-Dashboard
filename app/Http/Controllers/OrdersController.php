@@ -38,7 +38,7 @@ class OrdersController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Order $orders)
+    public function show(Order $order)
     {
         //
     }

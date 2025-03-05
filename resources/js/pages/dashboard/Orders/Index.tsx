@@ -10,7 +10,6 @@ type OrderProps = {
 
 const Index = () => {
     const { orders } = usePage<OrderProps>().props;
-    console.log('🚀 ~ Index ~ orders:', orders);
 
     const chartData: chartDataProsp[] = orders?.data.map(({ product }) => ({
         key: product.name,

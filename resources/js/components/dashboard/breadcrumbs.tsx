@@ -5,6 +5,7 @@ import { Fragment } from 'react';
 
 export function Breadcrumbs({ breadcrumbs }: { breadcrumbs: BreadcrumbItemType[] }) {
     const { url } = usePage();
+    const path = url.split('?')[0];
 
     return (
         <>
@@ -17,10 +18,12 @@ export function Breadcrumbs({ breadcrumbs }: { breadcrumbs: BreadcrumbItemType[]
                             return (
                                 <Fragment key={index}>
                                     <BreadcrumbItem>
-                                        {url == item.href ? (
+                                        {path == item.href ? (
                                             <BreadcrumbPage>{item.title}</BreadcrumbPage>
                                         ) : (
-                                            <BreadcrumbLink href={item.href}>{item.title}</BreadcrumbLink>
+                                            <BreadcrumbLink href={item.href} className="border-slide [--colorBorder: bg-primary] [--origin:left]">
+                                                {item.title}
+                                            </BreadcrumbLink>
                                         )}
                                     </BreadcrumbItem>
                                     {!isLast && <BreadcrumbSeparator />}

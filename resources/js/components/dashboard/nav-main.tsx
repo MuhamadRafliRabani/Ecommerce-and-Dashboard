@@ -48,7 +48,7 @@ export function NavMain({ items = [] }: { items: NavItem[] }) {
                                                 <Link
                                                     href={route(subItem.url)}
                                                     prefetch
-                                                    className="ms-4 list-item list-disc rounded-md py-1 ps-1 hover:bg-gray-200/10 hover:text-white"
+                                                    className="ms-4 list-item list-disc rounded-md py-1 ps-1 hover:bg-gray-100/50 dark:hover:bg-gray-200/10 dark:hover:text-white"
                                                 >
                                                     {subItem.title}
                                                 </Link>
