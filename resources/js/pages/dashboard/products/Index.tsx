@@ -58,6 +58,7 @@ const Index = () => {
             chartDescription="How many products in each category"
             analitics={analitics}
             path="products.create"
+            field="name"
         />
     );
 };

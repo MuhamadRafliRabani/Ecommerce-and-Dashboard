@@ -41,6 +41,7 @@ const Index = () => {
             chartDescription="How many products in each brand"
             analitics={analitics}
             path="products.create"
+            field="name"
         />
     );
 };

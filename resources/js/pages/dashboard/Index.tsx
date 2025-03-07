@@ -93,19 +93,19 @@ export default function Dashboard({ categories, orders }: DashboardsProps) {
 const InfoCards = ({ stats }: { stats: InfoDetail[] }) => (
     <div className="grid w-full auto-rows-min justify-items-center gap-2 md:grid-cols-4">
         {stats.map((item, i) => (
-            <Info key={i} item={item} />
+            <Info index={i} item={item} />
         ))}
     </div>
 );
 
 const ChartSection = ({ analytics, chartData }: { analytics: analiticsProsp[]; chartData: chartDataProsp[] }) => (
-    <div className="w-full">
+    <div className="appers-top w-full">
         <Chart analitics={analytics} chartData={chartData} chartDescription="Show all current products" />
     </div>
 );
 
 const TransactionTable = ({ orders }: { orders: PaginatedResponse<Order> }) => (
-    <Card className="h-full w-full pt-2 shadow md:min-w-2/5">
+    <Card className="appers-top h-full w-full pt-2 shadow md:min-w-2/5">
         <CardHeader className="-space-y-0.5 py-2">
             <CardTitle className="flex items-center justify-between">
                 <span>Recent Transactions</span>
@@ -113,6 +113,6 @@ const TransactionTable = ({ orders }: { orders: PaginatedResponse<Order> }) => (
             </CardTitle>
             <CardDescription>Transactions in a month</CardDescription>
         </CardHeader>
-        <DataTable columns={columnsDashboard} data={orders.data} links={orders.links} tableDefault={false} />
+        <DataTable columns={columnsDashboard} data={orders.data} links={orders.links} field="amount" title="orders" />
     </Card>
 );

@@ -1,19 +1,20 @@
 import Heading from '@/components/dashboard/heading';
 import InputError from '@/components/dashboard/input-error';
+import UploadImage from '@/components/dashboard/upload-image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import { breadcrumbs } from '@/pages/dashboard/Index';
 import { useForm } from '@inertiajs/react';
-import { CloudUpload } from 'lucide-react';
-import React, { useState } from 'react';
+import React from 'react';
 
 interface Field {
     name: string;
     label: string;
     placeholder?: string;
     type?: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     defaultValue?: any;
 }
 
@@ -21,29 +22,23 @@ interface CreateLayoutProps {
     fields: Field[];
     title: string;
     pathRoute: string;
+    id?: string | undefined;
+    create: boolean;
 }
 
-const CreateFieldLayout = ({ fields, title, pathRoute }: CreateLayoutProps) => {
+const CreateFieldLayout = ({ fields, title, pathRoute, id, create = true }: CreateLayoutProps) => {
     const initialData = Object.fromEntries(fields.map((field) => [field.name, field.defaultValue ?? '']));
-    const [imagePreview, setImagePreview] = useState<string | null>(null);
 
-    const { data, setData, post, errors, processing } = useForm(initialData);
-
-    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-
-        if (file) {
-            setData('image', file);
-
-            setImagePreview(URL.createObjectURL(file));
-        }
-    };
-
-    console.log(errors);
+    const { data, setData, post, put, errors, processing } = useForm(initialData);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        post(route(pathRoute));
+
+        if (create) {
+            post(route(pathRoute));
+        } else {
+            put(route(pathRoute, id));
+        }
     };
 
     return (
@@ -69,26 +64,16 @@ const CreateFieldLayout = ({ fields, title, pathRoute }: CreateLayoutProps) => {
                     </div>
                 ))}
 
-                {title == 'Brand' && (
-                    <div className="flex justify-between">
-                        <h3 className="min-w-52">
+                {title == 'Brand' ? (
+                    <div className="flex">
+                        <Label htmlFor="image" className="min-w-52">
                             Image <span className="text-base text-red-400">*</span>
-                        </h3>
-                        <Label htmlFor="Images" className="w-full cursor-pointer">
-                            <input type="file" id="Images" className="hidden" onChange={handleImageUpload} accept="image/*" />
-                            {imagePreview ? (
-                                <div className="group relative">
-                                    <img src={imagePreview} alt="Product preview" className="h-56 w-full rounded-md object-cover" />
-                                </div>
-                            ) : (
-                                <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
-                                    <CloudUpload className="h-12 w-12 text-white" />
-                                </div>
-                            )}
-                            {errors.image ? <InputError message={errors.image} /> : null}
                         </Label>
+                        <div className="w-full">
+                            <UploadImage data={data} setData={setData} errors={errors} />
+                        </div>
                     </div>
-                )}
+                ) : null}
                 <Button className="ms-52 mt-4 block" disabled={processing}>
                     submit
                 </Button>

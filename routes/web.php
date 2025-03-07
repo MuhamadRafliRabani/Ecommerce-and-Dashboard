@@ -26,9 +26,17 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
         return Inertia::render('dashboard/Index', ['categories' => $categories, 'orders' => $orders]);
     })->name('dashboard');
 
-    Route::resource('categories', CategoryController::class);
     Route::resource('products', ProductController::class);
+    Route::put('/products/${product}', [ProductController::class, 'update']);
+    Route::patch('/products/${product}', [ProductController::class, 'update']);
+
+
+
+
+    Route::resource('categories', CategoryController::class);
+
     Route::resource('brands', BrandsController::class);
+
     Route::resource('orders', OrdersController::class);
 });
 

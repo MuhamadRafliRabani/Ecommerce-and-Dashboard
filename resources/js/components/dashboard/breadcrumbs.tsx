@@ -17,7 +17,7 @@ export function Breadcrumbs({ breadcrumbs }: { breadcrumbs: BreadcrumbItemType[]
 
                             return (
                                 <Fragment key={index}>
-                                    <BreadcrumbItem>
+                                    <BreadcrumbItem style={{ animationDelay: `${index * 150}ms` }} className="appers-right">
                                         {path == item.href ? (
                                             <BreadcrumbPage>{item.title}</BreadcrumbPage>
                                         ) : (
@@ -26,7 +26,7 @@ export function Breadcrumbs({ breadcrumbs }: { breadcrumbs: BreadcrumbItemType[]
                                             </BreadcrumbLink>
                                         )}
                                     </BreadcrumbItem>
-                                    {!isLast && <BreadcrumbSeparator />}
+                                    {!isLast && <BreadcrumbSeparator style={{ animationDelay: `${index * 150}ms` }} className="appers-right" />}
                                 </Fragment>
                             );
                         })}

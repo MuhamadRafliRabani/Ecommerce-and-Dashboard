@@ -62,9 +62,12 @@ class BrandsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Brand $brands)
+    public function edit(Brand $brand)
     {
-        //
+        // dd($brand);
+        $brands = Brand::where('id', $brand->id)->get();
+
+        return Inertia::render('dashboard/Brands/Edit', ['brand' => $brands]);
     }
 
     /**
@@ -72,7 +75,30 @@ class BrandsController extends Controller
      */
     public function update(Request $request, Brand $brands)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:100',
+            'description' => 'string|max:225',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+
+
+        if ($request->hasFile('image')) {
+            if ($brands->image) {
+                Storage::delete($brands->image);
+            }
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $path = $image->storeAs('images', $imageName, 'public');
+        }
+
+        $brands->update([
+            'name' => $request->name,
+            'slug' => $path,
+            'description' => $request->description,
+        ]);
+
+        return redirect()->route('brands.index')->with('success', 'Brands successfully updated');
     }
 
     /**

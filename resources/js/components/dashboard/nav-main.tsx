@@ -19,7 +19,7 @@ export function NavMain({ items = [] }: { items: NavItem[] }) {
             <SidebarGroupLabel>Platform</SidebarGroupLabel>
             <SidebarMenu>
                 {/* Regular menu item (non-collapsible) */}
-                <SidebarMenuItem>
+                <SidebarMenuItem className="appers-top">
                     <SidebarMenuButton asChild isActive={'/dashboard' === url}>
                         <Link href="/dashboard" prefetch>
                             <LayoutGrid />
@@ -31,7 +31,7 @@ export function NavMain({ items = [] }: { items: NavItem[] }) {
                 {/* Accordion-based collapsible items */}
                 <Accordion type="single" collapsible className="py-0">
                     {items.map((item, i) => (
-                        <AccordionItem key={i} value={`item-${i}`} className="border-0">
+                        <AccordionItem key={i} value={`item-${i}`} style={{ animationDelay: `${i * 100}ms` }} className="appers-top border-0">
                             <SidebarMenuItem className="my-0">
                                 <AccordionTrigger className="[&[data-state=open]>button]:bg-muted hover:no-underline">
                                     <SidebarMenuButton>

@@ -1,5 +1,5 @@
 import { ContentLayout } from '@/layouts/content-layout';
-import { columns } from '@/lib/columns';
+import { columnsCategory } from '@/lib/columns';
 import { analiticsProsp, chartDataProsp, PaginatedResponse, Product } from '@/types';
 import { usePage } from '@inertiajs/react';
 import { Layers, ShoppingBag } from 'lucide-react';
@@ -40,7 +40,7 @@ const Index = () => {
 
     return (
         <ContentLayout
-            columns={columns}
+            columns={columnsCategory}
             chartData={chartData}
             data={categories}
             title="Categories"
@@ -48,6 +48,7 @@ const Index = () => {
             chartDescription="How many products in each category"
             analitics={analitics}
             path="categories.create"
+            field="name"
         />
     );
 };

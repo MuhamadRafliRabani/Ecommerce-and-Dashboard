@@ -7,7 +7,7 @@ const Create = () => {
         { name: 'image', label: 'Image' },
     ];
 
-    return <CreateFieldLayout fields={fields} title="Brand" pathRoute="brands.store" />;
+    return <CreateFieldLayout fields={fields} title="Brand" pathRoute="brands.store" create />;
 };
 
 export default Create;

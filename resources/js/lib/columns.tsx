@@ -1,22 +1,12 @@
-import OrderDetails from '@/components/dashboard/deteil-orders';
+import ActionOption from '@/components/action-option';
 import ConfirmationsDialog from '@/components/dialog';
 import { Button } from '@/components/ui/button';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Category } from '@/pages/dashboard/Categories/Index';
-import ProductDetail from '@/pages/dashboard/products/Show';
 import { Brand, Order, Product } from '@/types';
 import { Link } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
-import { MoreHorizontal } from 'lucide-react';
-import { toast } from 'sonner';
+import { ArrowUpDown } from 'lucide-react';
 
 const colors = {
     red: 'bg-red-100 text-red-500',
@@ -41,109 +31,57 @@ const colors = {
     brown: 'bg-amber-100 text-amber-500',
 };
 
-export const columns: ColumnDef<Category>[] = [
+export const columnsProduct: ColumnDef<Product>[] = [
     {
-        accessorKey: 'id',
-        header: 'ID',
+        id: 'select',
+        header: ({ table }) => (
+            <Checkbox
+                checked={table.getIsAllPageRowsSelected() || table.getIsSomePageRowsSelected()}
+                onCheckedChange={(value: boolean) => table.toggleAllPageRowsSelected(!!value)}
+                aria-label="Select all"
+            />
+        ),
+        cell: ({ row }) => (
+            <Checkbox checked={row.getIsSelected()} onCheckedChange={(value: boolean) => row.toggleSelected(!!value)} aria-label="Select row" />
+        ),
+        enableSorting: false,
+        enableHiding: false,
     },
     {
         accessorKey: 'name',
-        header: 'Name',
+        header: ({ column }) => (
+            <Button
+                className="text-primary/70 bg-transparent p-0 font-medium hover:bg-transparent"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Name <ArrowUpDown className="size-4" />
+            </Button>
+        ),
         cell: ({ row }) => (
-            <Link href={route('categories.show', row.original.id)} className="width-animated block w-[100px] truncate whitespace-nowrap">
-                {row.original.name}
-            </Link>
+            <div className="width-animated flex w-[150px] space-x-2 truncate whitespace-nowrap md:w-[195px]">
+                <img src="https://placehold.co/400x400" className="size-8 rounded" alt={row.original.name} />
+                <div className="-space-y-0.5">
+                    <Link href={route('products.show', row.original.id)} className="block text-sm font-medium tracking-tight">
+                        {row.original.name}
+                    </Link>
+                    <span className="text-primary/80 text-xs tracking-tighter md:tracking-wide">{row.original.category?.name}</span>
+                </div>
+            </div>
         ),
     },
-    {
-        accessorKey: 'description',
-        header: 'Description',
-        cell: ({ row }) => <p className="width-animated block w-[200px] truncate whitespace-nowrap">{row.original.description}</p>,
-    },
-    {
-        accessorKey: 'product.length',
-        header: 'Products',
-    },
-    {
-        id: 'actions',
-        header: 'Actions',
-        enableHiding: false,
-        cell: ({ row }) => {
-            const handleCopy = () => {
-                navigator.clipboard.writeText(row.original.id);
-                toast.success('copied successfully');
-            };
 
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem onClick={handleCopy}>Copy ID</DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem asChild>
-                            <Link href={route('categories.show', row.original.id)} className="flex items-center">
-                                View Details
-                            </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                            <Link href={route('categories.edit', row.original.id)} className="flex items-center">
-                                Edit Category
-                            </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <ConfirmationsDialog
-                            title="are you sure want to delete this category"
-                            triger="Delete Category"
-                            description="Once this category is deleted, all of its resources and data will also be permanently deleted."
-                            path="categories.destroy"
-                            params={{ category: row.original.id }}
-                        />
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            );
-        },
-    },
-];
-
-export const columnsProduct: ColumnDef<Product>[] = [
-    {
-        accessorKey: 'id',
-        header: 'ID',
-    },
-    {
-        header: 'Name',
-        cell: ({ row }) => {
-            return (
-                <Link href={route('products.show', row.original.id)} className="width-animated block w-[100px] truncate whitespace-nowrap">
-                    {row.original.name}
-                </Link>
-            );
-        },
-    },
-    {
-        header: 'Descriptions',
-        cell: ({ row }) => {
-            return <p className="width-animated block w-[200px] truncate whitespace-nowrap hover:max-w-[350px]">{row.original.description}</p>;
-        },
-    },
     {
         accessorKey: 'price',
-        header: 'Price',
+        header: ({ column }) => (
+            <Button
+                className="text-primary/70 bg-transparent p-0 font-medium hover:bg-transparent"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Price <ArrowUpDown className="size-4" />
+            </Button>
+        ),
         cell: ({ row }) => {
-            return `$${row.original.price.toFixed(2)}`;
-        },
-    },
-    {
-        header: 'Image',
-        cell: ({ row }) => {
-            // return <img src={'storage/' + row.original.image} alt={row.original.name} className="size-10 rounded-md object-cover md:size-14" />;
-            return <img src={'https://placehold.co/400x400/png'} alt={row.original.name} className="size-10 rounded-md object-cover md:size-14" />;
+            return <p>${row.original.price.toFixed(2)}</p>;
         },
     },
     {
@@ -153,7 +91,7 @@ export const columnsProduct: ColumnDef<Product>[] = [
             return (
                 <Link
                     href={route('categories.show', row.original.category_id)}
-                    className={`border-slide [--colorBorder: ${colors[row.original.category?.color || '']}] rounded p-1.5 text-sm [--origin:right] ${colors[row.original.category?.color || '']}`}
+                    className={`border-slide width-animated [--colorBorder: w-[100px] ${colors[row.original.category?.color || '']}] rounded p-1.5 text-sm [--origin:right] ${colors[row.original.category?.color || '']}`}
                 >
                     {row.original.category?.name.slice(0, 12)}
                 </Link>
@@ -176,45 +114,27 @@ export const columnsProduct: ColumnDef<Product>[] = [
     },
     {
         accessorKey: 'Quantity',
-        header: 'Quantity',
+        header: ({ column }) => (
+            <Button
+                className="text-primary/70 bg-transparent p-0 font-medium hover:bg-transparent"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Quantity <ArrowUpDown className="size-4" />
+            </Button>
+        ),
+        cell: ({ row }) => <p className="">{row.original.Quantity}</p>,
     },
     {
         id: 'actions',
         header: 'Actions',
         enableHiding: false,
         cell: ({ row }) => {
-            const handleCopy = () => {
-                navigator.clipboard.writeText(row.original.id);
-                toast.success('copied successfully');
-            };
-
             return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem onClick={handleCopy}>Copy ID</DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem asChild>
-                            <Sheet>
-                                <SheetTrigger className="flex items-center p-1.5 text-sm">View Details</SheetTrigger>
-
-                                <SheetContent>
-                                    <ProductDetail data={row.original} />
-                                </SheetContent>
-                            </Sheet>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                            <Link href={route('products.edit', row.original.id)} className="flex items-center">
-                                Edit Products
-                            </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
+                <ActionOption
+                    row={row}
+                    path="products.edit"
+                    ref="Product"
+                    deleteItem={
                         <ConfirmationsDialog
                             title="are you sure want to delete this Product"
                             triger="Delete Product"
@@ -222,8 +142,71 @@ export const columnsProduct: ColumnDef<Product>[] = [
                             path="products.destroy"
                             params={{ product: row.original.id }}
                         />
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                    }
+                />
+            );
+        },
+    },
+];
+
+export const columnsCategory: ColumnDef<Category>[] = [
+    {
+        accessorKey: 'id',
+        header: 'ID',
+    },
+    {
+        accessorKey: 'name',
+        header: ({ column }) => (
+            <Button
+                className="text-primary/70 bg-transparent p-0 font-medium hover:bg-transparent"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Name <ArrowUpDown className="size-4" />
+            </Button>
+        ),
+        cell: ({ row }) => (
+            <Link href={route('categories.show', row.original.id)} className="width-animated block w-[100px] truncate whitespace-nowrap">
+                {row.original.name}
+            </Link>
+        ),
+    },
+    {
+        accessorKey: 'description',
+        header: 'Description',
+        cell: ({ row }) => <p className="width-animated block w-[200px] truncate whitespace-nowrap">{row.original.description}</p>,
+    },
+    {
+        accessorKey: 'product.length',
+        header: ({ column }) => (
+            <Button
+                className="text-primary/70 bg-transparent p-0 font-medium hover:bg-transparent"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Product <ArrowUpDown className="size-4" />
+            </Button>
+        ),
+    },
+    {
+        id: 'actions',
+        header: 'Actions',
+        enableHiding: false,
+        cell: ({ row }) => {
+            return (
+                <ActionOption
+                    row={row}
+                    path="categories.edit"
+                    pathDetail="categories.show"
+                    ref="Category"
+                    deleteItem={
+                        <ConfirmationsDialog
+                            title="are you sure want to delete this category"
+                            triger="Delete Category"
+                            description="Once this category is deleted, all of its resources and data will also be permanently deleted."
+                            path="categories.destroy"
+                            params={{ category: row.original.id }}
+                        />
+                    }
+                />
             );
         },
     },
@@ -236,12 +219,15 @@ export const columnsBrands: ColumnDef<Brand>[] = [
     },
     {
         accessorKey: 'name',
-        header: 'Name',
+        header: ({ column }) => (
+            <Button
+                className="text-primary/70 bg-transparent p-0 font-medium hover:bg-transparent"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Name <ArrowUpDown className="size-4" />
+            </Button>
+        ),
         cell: ({ row }) => <Link href={route('brands.show', row.original.id)}>{row.original.name}</Link>,
-    },
-    {
-        accessorKey: 'slug',
-        header: 'Slug',
     },
     {
         header: 'Image',
@@ -250,8 +236,18 @@ export const columnsBrands: ColumnDef<Brand>[] = [
         },
     },
     {
-        accessorKey: 'product.length',
-        header: 'Products',
+        accessorKey: 'products',
+        header: ({ column }) => (
+            <Button
+                className="text-primary/70 bg-transparent p-0 font-medium hover:bg-transparent"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Products <ArrowUpDown className="size-4" />
+            </Button>
+        ),
+        cell: ({ row }) => {
+            return row.original.product.length;
+        },
     },
     {
         accessorKey: 'website',
@@ -269,34 +265,13 @@ export const columnsBrands: ColumnDef<Brand>[] = [
         header: 'Actions',
         enableHiding: false,
         cell: ({ row }) => {
-            const handleCopy = () => {
-                navigator.clipboard.writeText(row.original.id);
-                toast.success('copied successfully');
-            };
-
             return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem onClick={handleCopy}>Copy ID</DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem asChild>
-                            <Link href={route('brands.show', row.original.id)} className="flex items-center">
-                                View Details
-                            </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                            <Link href={route('brands.edit', row.original.id)} className="flex items-center">
-                                Edit Category
-                            </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
+                <ActionOption
+                    row={row}
+                    path="brands.edit"
+                    ref="brand"
+                    pathDetail="brands.show"
+                    deleteItem={
                         <ConfirmationsDialog
                             title="are you sure want to delete this Brands"
                             triger="Delete Brands"
@@ -304,8 +279,8 @@ export const columnsBrands: ColumnDef<Brand>[] = [
                             path="brands.destroy"
                             params={{ brand: row.original.id }}
                         />
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                    }
+                />
             );
         },
     },
@@ -315,70 +290,89 @@ export const columnsOrders: ColumnDef<Order>[] = [
     {
         accessorKey: 'id',
         header: 'ID',
+        cell: ({ row }) => <p className="width-animated block truncate whitespace-nowrap">{row.index + 1}</p>,
     },
     {
-        accessorKey: 'user.name',
-        header: 'Username',
+        accessorKey: 'name',
+        header: ({ column }) => (
+            <Button
+                className="text-primary/70 bg-transparent p-0 font-medium hover:bg-transparent"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Name <ArrowUpDown className="size-4" />
+            </Button>
+        ),
+        cell: ({ row }) => (
+            <div className="width-animated flex w-[150px] space-x-2 truncate whitespace-nowrap">
+                <img src="https://placehold.co/400x400" className="size-8 rounded" alt={row.original.product.name} />
+                <div className="-space-y-0.5">
+                    <Link href={route('products.show', row.original.product_id)} className="block text-sm font-medium tracking-tight">
+                        {row.original.product.name}
+                    </Link>
+                    <span className="text-primary/80 text-xs tracking-tighter md:tracking-wide">#{row.original.order_number}</span>
+                </div>
+            </div>
+        ),
     },
     {
-        accessorKey: 'product.name',
-        header: 'Product',
-    },
-    {
-        accessorKey: 'order_number',
-        header: 'Order Number',
-        cell: ({ row }) => '#' + row.original.order_number,
-    },
-    {
-        accessorKey: 'total_price',
-        header: 'Total Price',
+        accessorKey: 'Price',
+        header: ({ column }) => (
+            <Button
+                className="text-primary/70 bg-transparent p-0 font-medium hover:bg-transparent"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Price <ArrowUpDown className="size-4" />
+            </Button>
+        ),
         cell: ({ row }) => `$${row.original.total_price.toFixed(2)}`,
     },
     {
-        accessorKey: 'status',
-        header: 'Status',
+        accessorKey: 'Status',
+        header: ({ column }) => (
+            <Button
+                className="text-primary/70 bg-transparent p-0 font-medium hover:bg-transparent"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Status <ArrowUpDown className="size-4" />
+            </Button>
+        ),
+        cell: ({ row }) => (
+            <span
+                className={`inline-flex items-center rounded px-2 py-1 text-xs font-medium ${
+                    row.original.status === 'pending'
+                        ? 'bg-blue-200 text-blue-700'
+                        : row.original.status === 'processing'
+                          ? 'bg-yellow-200 text-yellow-700'
+                          : row.original.status === 'delivered'
+                            ? 'bg-green-200 text-green-700'
+                            : 'bg-red-200 text-red-600'
+                }`}
+            >
+                {row.original.status}
+            </span>
+        ),
     },
     {
-        accessorKey: 'payment_method',
+        accessorKey: 'payment method',
         header: 'Payment',
+        cell: ({ row }) => <span className="w-[100] truncate whitespace-nowrap">{row.original.payment_method}</span>,
+    },
+    {
+        accessorKey: 'Customer',
+        header: 'Customer',
+        cell: ({ row }) => <span className="w-[100px] overflow-hidden whitespace-nowrap">{row.original.user.name}</span>,
     },
     {
         id: 'actions',
         header: 'Actions',
         enableHiding: false,
         cell: ({ row }) => {
-            const handleCopy = () => {
-                navigator.clipboard.writeText(row.original.id);
-                toast.success('copied successfully');
-            };
-
             return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem onClick={handleCopy}>Copy ID</DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem asChild>
-                            <Sheet>
-                                <SheetTrigger className="flex items-center p-1.5 text-sm">View Details</SheetTrigger>
-
-                                <SheetContent className="overflow-x-hidden overflow-y-scroll">
-                                    <OrderDetails data={row.original} />
-                                </SheetContent>
-                            </Sheet>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                            <Link href={route('orders.edit', row.original.id)} className="flex items-center">
-                                Edit Category
-                            </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
+                <ActionOption
+                    row={row}
+                    path="orders.edit"
+                    ref="Order"
+                    deleteItem={
                         <ConfirmationsDialog
                             title="are you sure want to delete this order"
                             triger="Delete orders"
@@ -386,8 +380,8 @@ export const columnsOrders: ColumnDef<Order>[] = [
                             path="orders.destroy"
                             params={{ order: row.original.id }}
                         />
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                    }
+                />
             );
         },
     },
@@ -404,12 +398,20 @@ export const columnsDashboard: ColumnDef<Order>[] = [
         header: 'Status',
     },
     {
-        accessorKey: 'payment_method',
-        header: 'Method',
+        accessorKey: 'payment method',
+        header: 'Payment ',
+        cell: ({ row }) => <span className="w-[100] truncate whitespace-nowrap">{row.original.payment_method}</span>,
     },
     {
         accessorKey: 'total_price',
-        header: 'Amount',
+        header: ({ column }) => (
+            <Button
+                className="text-primary/70 bg-transparent p-0 font-medium hover:bg-transparent"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Amount <ArrowUpDown className="size-4" />
+            </Button>
+        ),
         cell: ({ row }) => `$${row.original.total_price.toFixed(2)}`,
     },
     {
@@ -417,38 +419,12 @@ export const columnsDashboard: ColumnDef<Order>[] = [
         header: 'Actions',
         enableHiding: false,
         cell: ({ row }) => {
-            const handleCopy = () => {
-                navigator.clipboard.writeText(row.original.id);
-                toast.success('copied successfully');
-            };
-
             return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem onClick={handleCopy}>Copy ID</DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem asChild>
-                            <Sheet>
-                                <SheetTrigger className="flex items-center p-1.5 text-sm">View Details</SheetTrigger>
-
-                                <SheetContent>
-                                    <OrderDetails data={row.original} />
-                                </SheetContent>
-                            </Sheet>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                            <Link href={route('brands.edit', row.original.id)} className="flex items-center">
-                                Edit Category
-                            </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
+                <ActionOption
+                    row={row}
+                    path="orders.edit"
+                    ref="order"
+                    deleteItem={
                         <ConfirmationsDialog
                             title="are you sure want to delete this category"
                             triger="Delete Category"
@@ -456,8 +432,8 @@ export const columnsDashboard: ColumnDef<Order>[] = [
                             path="categories.destroy"
                             params={{ category: row.original.id }}
                         />
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                    }
+                />
             );
         },
     },

@@ -82,7 +82,8 @@ export interface Product {
     id: string;
     name: string;
     price: number;
-    image: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    image: string | any;
     slug: string;
     description: string;
     category_id: number;

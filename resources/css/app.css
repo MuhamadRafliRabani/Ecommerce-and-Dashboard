@@ -247,7 +247,6 @@ body {
         transform: scaleX(0);
     }
     100% {
-        transform: scaleX(1);
     }
 }
 
@@ -256,5 +255,51 @@ body {
 
     &:hover {
         width: fit-content;
+    }
+}
+
+.appers-left {
+    animation: apperLeft 0.7s linear 0s normal backwards;
+}
+
+@keyframes apperLeft {
+    0% {
+        transform: translateX(100px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.appers-right {
+    animation: apperRigth 0.7s linear 0s normal backwards;
+}
+
+@keyframes apperRigth {
+    0% {
+        transform: translateX(-100px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.appers-top {
+    animation: apperTop 0.65s linear 0s normal backwards;
+}
+
+@keyframes apperTop {
+    0% {
+        transform: translateY(100px);
+    }
+
+    100% {
+        transform: translateY(0);
     }
 }

@@ -1,30 +1,35 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 
-type ItemType = {
+type ItemType<T extends { id: number | string; name: string }> = {
     title: string;
-    items: { key: string; value: number }[];
-    onChange: ((title: string, value: number) => void) | undefined;
+    items: T[];
+    onChange: (title: string, value: number | string) => void;
     placeholder?: string;
-    selectedValue?: number;
+    selectedValue?: number | string;
 };
 
-const AppSelect = ({ title, items, onChange, placeholder = 'Select...', selectedValue }: ItemType) => {
+const AppSelect = <T extends { id: number | string; name: string }>({
+    title,
+    items,
+    onChange,
+    placeholder = 'Select...',
+    selectedValue,
+}: ItemType<T>) => {
     const handleValueChange = (value: string) => {
-        const numericValue = Number(value);
-        if (onChange) {
-            onChange(title, numericValue);
-        }
+        onChange(title, value);
     };
 
     return (
-        <Select onValueChange={handleValueChange}>
+        <Select onValueChange={handleValueChange} value={selectedValue?.toString()}>
             <SelectTrigger className="focus:border focus:ring-0">
-                <SelectValue placeholder={placeholder}>{items.find((item) => item.value === selectedValue)?.key || placeholder}</SelectValue>
+                <SelectValue placeholder={placeholder}>
+                    {items.find((item) => item.id.toString() === selectedValue?.toString())?.name || placeholder}
+                </SelectValue>
             </SelectTrigger>
             <SelectContent className="max-h-64">
                 {items.map((item) => (
-                    <SelectItem key={item.value} value={item.value.toString()}>
-                        {item.key}
+                    <SelectItem key={item.id} value={item.id.toString()}>
+                        {item.name}
                     </SelectItem>
                 ))}
             </SelectContent>
