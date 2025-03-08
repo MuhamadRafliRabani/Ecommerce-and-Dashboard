@@ -21,7 +21,7 @@ const ShowLayout = ({ data, columns, links, detail }) => {
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                <DataTable columns={columns} data={data} links={links} />
+                <DataTable columns={columns} data={data} links={links} field="name" title="product" />
             </CardContent>
         </AppLayout>
     );

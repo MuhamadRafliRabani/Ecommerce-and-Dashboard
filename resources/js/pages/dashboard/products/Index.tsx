@@ -35,7 +35,7 @@ const Index = () => {
             color: 'bg-primary',
         },
         {
-            labels: 'salled Product',
+            labels: 'saled Product',
             value: Number(totalOrders),
             icon: File,
             color: 'bg-gray-300',

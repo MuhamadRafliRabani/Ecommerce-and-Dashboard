@@ -122,7 +122,7 @@ export const columnsProduct: ColumnDef<Product>[] = [
                 Quantity <ArrowUpDown className="size-4" />
             </Button>
         ),
-        cell: ({ row }) => <p className="">{row.original.Quantity}</p>,
+        cell: ({ row }) => <p className="">{row.original.Quantity} items</p>,
     },
     {
         id: 'actions',
@@ -176,7 +176,7 @@ export const columnsCategory: ColumnDef<Category>[] = [
         cell: ({ row }) => <p className="width-animated block w-[200px] truncate whitespace-nowrap">{row.original.description}</p>,
     },
     {
-        accessorKey: 'product.length',
+        accessorKey: 'products',
         header: ({ column }) => (
             <Button
                 className="text-primary/70 bg-transparent p-0 font-medium hover:bg-transparent"
@@ -185,6 +185,9 @@ export const columnsCategory: ColumnDef<Category>[] = [
                 Product <ArrowUpDown className="size-4" />
             </Button>
         ),
+        cell: ({ row }) => {
+            return <p>{row.original.product.length} items</p>;
+        },
     },
     {
         id: 'actions',
@@ -246,7 +249,7 @@ export const columnsBrands: ColumnDef<Brand>[] = [
             </Button>
         ),
         cell: ({ row }) => {
-            return row.original.product.length;
+            return <p>{row.original.product.length} items</p>;
         },
     },
     {
