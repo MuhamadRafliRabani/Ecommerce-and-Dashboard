@@ -12,8 +12,8 @@ use Inertia\Inertia;
 
 
 Route::get('/', function () {
-    return Inertia::render('ecommerce/Index');
-})->name('ecommerce');
+    return Inertia::render('auth/login');
+});
 
 
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
@@ -29,9 +29,6 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::resource('products', ProductController::class);
     Route::put('/products/${product}', [ProductController::class, 'update']);
     Route::patch('/products/${product}', [ProductController::class, 'update']);
-
-
-
 
     Route::resource('categories', CategoryController::class);
 

@@ -401,7 +401,7 @@ export const columnsDashboard: ColumnDef<Order>[] = [
         header: 'Status',
     },
     {
-        accessorKey: 'payment method',
+        accessorKey: 'payment',
         header: 'Payment ',
         cell: ({ row }) => <span className="w-[100] truncate whitespace-nowrap">{row.original.payment_method}</span>,
     },

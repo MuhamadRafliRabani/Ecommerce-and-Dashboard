@@ -7,7 +7,7 @@ import { columnsDashboard } from '@/lib/columns';
 import { analiticsProsp, BreadcrumbItem, chartDataProsp, InfoDetail, Order, PaginatedResponse } from '@/types';
 import { Head } from '@inertiajs/react';
 import { Box, Clock, DollarSign, Layers, ShoppingBag } from 'lucide-react';
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Category } from './Categories/Index';
 
 export const breadcrumbs: BreadcrumbItem[] = [
@@ -93,7 +93,9 @@ export default function Dashboard({ categories, orders }: DashboardsProps) {
 const InfoCards = ({ stats }: { stats: InfoDetail[] }) => (
     <div className="grid w-full auto-rows-min justify-items-center gap-2 md:grid-cols-4">
         {stats.map((item, i) => (
-            <Info index={i} item={item} />
+            <React.Fragment key={i}>
+                <Info index={i} item={item} />
+            </React.Fragment>
         ))}
     </div>
 );
