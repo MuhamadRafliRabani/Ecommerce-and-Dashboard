@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link rel="shortcut icon" href="logo.png" style="border-radius: 50%" type="image/x-icon">
+  <link rel="shortcut icon" href="icon.png" type="image/x-icon">
   <title inertia>{{ config('app.name', 'Dashboard') }}</title>
 
   <style>
