@@ -91,6 +91,7 @@ export interface Product {
     stock: number;
     Quantity: number;
     order: Order[];
+    order_id: number;
     category?: Category;
     brand: Brand;
     user: User;
@@ -146,7 +147,7 @@ export interface PaginatedResponse<T> {
 }
 
 export interface chartDataProsp {
-    key: string;
+    key: string | undefined;
     value: number;
 }
 

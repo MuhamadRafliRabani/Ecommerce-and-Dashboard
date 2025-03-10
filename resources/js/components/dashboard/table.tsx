@@ -1,5 +1,4 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { PaginationLinkProsp } from '@/types';
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -18,17 +17,16 @@ import { Button } from '../ui/button';
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '../ui/dropdown-menu';
 import { Separator } from '../ui/separator';
 import InputFilterTable from './filterInputTable';
-import Pagginations from './paggination';
+import { DataTablePagination } from './pagginationTable';
 
 interface DataTableProps<TData, TValue> {
     title: string;
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
-    links: PaginationLinkProsp[];
     field: string;
 }
 
-export function DataTable<TData, TValue>({ title, columns, data, links, field }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ title, columns, data, field }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
@@ -116,11 +114,10 @@ export function DataTable<TData, TValue>({ title, columns, data, links, field }:
                     </TableBody>
                 </Table>
             </div>
-            <div className="text-muted-foreground py-4 text-sm">
-                {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s) selected.
-            </div>
             <Separator />
-            <Pagginations links={links} />
+            <div className="text-muted-foreground w-full py-4 text-sm">
+                <DataTablePagination table={table} />
+            </div>
         </div>
     );
 }

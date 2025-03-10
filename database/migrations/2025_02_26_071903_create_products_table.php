@@ -18,26 +18,14 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('slug');
             $table->string('description')->nullable();
-            $table->foreignId('category_id')->constrained(
-                table: 'categories',
-                indexName: 'category_id'
-            )->onDelete('cascade');
-            $table->foreignId('user_id')->constrained(
-                table: 'users',
-                indexName: 'user_id'
-            )->onDelete('cascade');
-            $table->foreignId('brand_id')->constrained(
-                table: 'brands',
-                indexName: 'brands_id'
-            )->onDelete('cascade');
-            $table->foreignId('order_id')->nullable()->constrained(
-                table: 'orders',
-                indexName: 'order_id'
-            )->onDelete('cascade');
+            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('brand_id')->constrained('brands')->onDelete('cascade');
             $table->integer('Quantity');
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.

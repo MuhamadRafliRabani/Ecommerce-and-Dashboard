@@ -17,12 +17,13 @@ class ProductController extends Controller
     public function index()
     {
         // get all product with related data (brand, category, user) and paginate
-        $products = Product::with(['category', 'brand', 'user',])->paginate(10);
+        $products = Product::with(['category', 'brand', 'user',])->latest()->get();
 
-        $orders = Order::count();
+        $category = Category::count();
+        $brands = Brand::count();
 
         // render index product component 
-        return Inertia::render('dashboard/products/Index', ['products' => $products, 'totalOrders' => $orders]);
+        return Inertia::render('dashboard/products/Index', ['products' => $products,  'category' => $category, 'brands' => $brands]);
     }
 
     public function create()

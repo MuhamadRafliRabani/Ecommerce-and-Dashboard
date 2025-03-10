@@ -1,64 +1,86 @@
 import { ContentLayout } from '@/layouts/content-layout';
 import { columnsProduct } from '@/lib/columns';
-import { analiticsProsp, chartDataProsp, PaginatedResponse, Product } from '@/types';
+import { analiticsProsp, chartDataProsp, InfoDetail, Order, Product } from '@/types';
 import { usePage } from '@inertiajs/react';
-import { File, Layers, ShoppingBag } from 'lucide-react';
+import { Layers, ShoppingBag } from 'lucide-react';
+import { useMemo } from 'react';
+import { Category } from '../Categories/Index';
 
 type ProductsProps = {
-    products: PaginatedResponse<Product>;
-    orders: number;
+    products: Product[];
+    orders: Order[];
+    category: Category[];
 };
 
 const Index = () => {
-    const { products, totalOrders } = usePage<ProductsProps>().props;
+    const { products, category, brands } = usePage<ProductsProps>().props;
+    console.log('🚀 ~ Index ~ category:', products);
 
-    const chartData: chartDataProsp[] = [
+    const { amount, currentProduct } = useMemo(() => {
+        // your logic here
+        const amount = products.reduce((acc, product) => acc + product.price, 0).toFixed(2);
+        const currentProduct = products.reduce((acc, product) => acc + product.Quantity, 0);
+
+        return {
+            amount,
+            currentProduct,
+        };
+    }, [products]);
+
+    const stats: InfoDetail[] = [
         {
-            key: 'All Products',
-            value: products.data.length,
+            title: 'Current Products',
+            value: '+' + currentProduct,
+            icon: ShoppingBag,
         },
         {
-            key: 'Salled Products',
-            value: Number(totalOrders),
+            title: 'Products Amount',
+            value: '$' + amount,
+            icon: ShoppingBag,
         },
         {
-            key: 'remaind Products',
-            value: products.data.length - Number(totalOrders),
+            title: 'Current Category',
+            value: '+' + category,
+            icon: ShoppingBag,
+        },
+        {
+            title: 'Current Brands',
+            value: '+' + Number(brands),
+            icon: ShoppingBag,
         },
     ];
 
-    const analitics: analiticsProsp[] = [
+    const chartData: chartDataProsp[] = products.map(({ category }) => ({
+        key: category?.name,
+        value: products.filter((item) => item.category?.name == category?.name).length,
+    }));
+
+    const analytics: analiticsProsp[] = [
         {
-            labels: 'All Products',
-            value: products.data.length,
-            icon: ShoppingBag,
-            color: 'bg-primary',
-        },
-        {
-            labels: 'saled Product',
-            value: Number(totalOrders),
-            icon: File,
+            labels: 'Current Brand',
+            value: products.length,
+            icon: Layers,
             color: 'bg-gray-300',
         },
         {
-            labels: 'remain Product',
-            value: products.data.length - Number(totalOrders),
-            icon: Layers,
-            color: 'bg-gray-400',
+            labels: 'Total Products',
+            value: currentProduct,
+            icon: ShoppingBag,
+            color: 'bg-primary',
         },
     ];
 
     return (
         <ContentLayout
             columns={columnsProduct}
-            chartData={chartData}
+            stats={stats}
             data={products}
             title="Products"
             description="Manage your website's product categories and products."
-            chartDescription="How many products in each category"
-            analitics={analitics}
             path="products.create"
             field="name"
+            analytics={analytics}
+            chartData={chartData}
         />
     );
 };

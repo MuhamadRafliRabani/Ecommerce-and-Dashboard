@@ -17,7 +17,9 @@ const Info = ({ item, index }: ItemProps) => {
                 <item.icon className="size-4 stroke-gray-950" strokeWidth={0.5} />
             </div>
             <div className="space-y-1">
-                <h1 className="text-2xl font-extrabold">{item.value}</h1>
+                <h1 className="text-2xl font-extrabold">
+                    {typeof item.value === 'string' && item.value.length >= 8 ? item.value.slice(0, 10) + '...' : item.value}
+                </h1>
                 <p className="text-xs">{item.value} analytics for last week</p>
             </div>
         </div>

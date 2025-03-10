@@ -153,6 +153,7 @@ export const columnsCategory: ColumnDef<Category>[] = [
     {
         accessorKey: 'id',
         header: 'ID',
+        cell: ({ row }) => row.index + 1,
     },
     {
         accessorKey: 'name',
@@ -219,6 +220,7 @@ export const columnsBrands: ColumnDef<Brand>[] = [
     {
         accessorKey: 'id',
         header: 'ID',
+        cell: ({ row }) => row.index + 1,
     },
     {
         accessorKey: 'name',
@@ -239,7 +241,8 @@ export const columnsBrands: ColumnDef<Brand>[] = [
         },
     },
     {
-        accessorKey: 'products',
+        accessorKey: 'product.length',
+
         header: ({ column }) => (
             <Button
                 className="text-primary/70 bg-transparent p-0 font-medium hover:bg-transparent"
@@ -296,7 +299,7 @@ export const columnsOrders: ColumnDef<Order>[] = [
         cell: ({ row }) => <p className="width-animated block truncate whitespace-nowrap">{row.index + 1}</p>,
     },
     {
-        accessorKey: 'name',
+        accessorKey: 'product.name',
         header: ({ column }) => (
             <Button
                 className="text-primary/70 bg-transparent p-0 font-medium hover:bg-transparent"
@@ -327,10 +330,10 @@ export const columnsOrders: ColumnDef<Order>[] = [
                 Price <ArrowUpDown className="size-4" />
             </Button>
         ),
-        cell: ({ row }) => `$${row.original.total_price.toFixed(2)}`,
+        cell: ({ row }) => `$${Number(row.original.total_price).toFixed(2)}`,
     },
     {
-        accessorKey: 'Status',
+        accessorKey: 'status',
         header: ({ column }) => (
             <Button
                 className="text-primary/70 bg-transparent p-0 font-medium hover:bg-transparent"
@@ -415,7 +418,7 @@ export const columnsDashboard: ColumnDef<Order>[] = [
                 Amount <ArrowUpDown className="size-4" />
             </Button>
         ),
-        cell: ({ row }) => `$${row.original.total_price.toFixed(2)}`,
+        cell: ({ row }) => `$${Number(row.original.total_price).toFixed(2)}`,
     },
     {
         id: 'actions',

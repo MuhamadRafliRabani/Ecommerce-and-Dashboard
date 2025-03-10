@@ -14,7 +14,7 @@ class CategoryController extends Controller
     public function index()
     {
         // get data categorie with realted products and count products
-        $categories = Category::with('product')->latest()->paginate(10);
+        $categories = Category::with('product')->latest()->get();
         $totalCategories = Category::count();
 
         // rander index product

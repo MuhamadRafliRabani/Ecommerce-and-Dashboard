@@ -126,8 +126,19 @@ return new class extends Migration
 //     'Tesla Model 3 Diecast',
 //     'LG OLED C2 55-inch TV',
 //     'Puma RS-X Sneakers',
-//     'Gucci GG Marmont Bag'
+//     'Gucci GG Marmont Bag',
+//     'Bose QuietComfort 45',
+//     'Samsung Galaxy S24 Ultra',
+//     'Xiaomi Redmi Note 12 Pro',
+//     'HP Spectre x360 Laptop',
+//     'Asus ROG Strix G16',
+//     'MSI Gaming Monitor 27-inch',
+//     'Apple Watch Series 9',
+//     'JBL Charge 5 Bluetooth Speaker',
+//     'Ray-Ban Wayfarer Sunglasses',
+//     'The North Face Puffer Jacket'
 // ];
+
 
 // $category_ids = Category::pluck('id')->toArray();
 // $brand_ids = Brand::pluck('id')->toArray();
@@ -165,8 +176,8 @@ return new class extends Migration
 // use Illuminate\Support\Str;
 // use Carbon\Carbon;
 
-// $user_ids = [1, 2, 3, 4]; 
-// $products = Product::inRandomOrder()->limit(4)->get();
+// $user_ids = [1, 2, 3, 4,5,6,7,8]; 
+// $products = Product::inRandomOrder()->limit(10)->get();
 
 // if ($products->count() < 4) {
 //     die("Not enough products found! Please add more products first.\n");

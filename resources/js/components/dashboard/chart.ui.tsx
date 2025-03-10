@@ -11,11 +11,10 @@ import StatCard from './statCard';
 
 type chart = {
     chartData: chartDataProsp[];
-    chartDescription: string;
     analitics: analiticsProsp[];
 };
 
-export function Chart({ chartData, chartDescription = 'January - June 2024', analitics }: chart) {
+export function Chart({ chartData, analitics }: chart) {
     const chartConfig = {
         value: {
             label: 'products',
@@ -25,12 +24,12 @@ export function Chart({ chartData, chartDescription = 'January - June 2024', ana
     } satisfies ChartConfig;
 
     return (
-        <Card className="h-full w-auto min-w-auto px-0">
+        <Card className="h-full w-auto px-0">
             <CardHeader>
                 <CardTitle>Bar Chart - Multiple</CardTitle>
-                <CardDescription>{chartDescription}</CardDescription>
+                <CardDescription>February - June 2025</CardDescription>
             </CardHeader>
-            <ChartContainer config={chartConfig} className="-ms-5 block max-h-72 w-full">
+            <ChartContainer config={chartConfig} className="-ms-5 flex max-h-72 w-full">
                 <BarChart accessibilityLayer data={chartData}>
                     <CartesianGrid vertical={false} />
                     <XAxis

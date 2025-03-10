@@ -1,8 +1,9 @@
 import { ContentLayout } from '@/layouts/content-layout';
 import { columnsCategory } from '@/lib/columns';
-import { analiticsProsp, chartDataProsp, PaginatedResponse, Product } from '@/types';
+import { analiticsProsp, chartDataProsp, InfoDetail, Product } from '@/types';
 import { usePage } from '@inertiajs/react';
 import { Layers, ShoppingBag } from 'lucide-react';
+import { useMemo } from 'react';
 
 export type Category = {
     id: string;
@@ -13,42 +14,72 @@ export type Category = {
     description?: string;
 };
 
-type categoryProps = { categories: PaginatedResponse<Category>; totalCategories: number };
-
 const Index = () => {
-    const { categories, totalCategories } = usePage<categoryProps>().props;
+    const { categories } = usePage<{ categories: Category[] }>().props;
 
-    const chartData: chartDataProsp[] = categories.data?.map(({ name, product }) => ({
+    const { currentProduct } = useMemo(() => {
+        // your logic here
+        const currentProduct = categories.reduce((acc, item) => acc + item.product.length, 0);
+
+        return {
+            currentProduct,
+        };
+    }, [categories]);
+
+    const stats: InfoDetail[] = [
+        {
+            title: 'Current categories',
+            value: '+' + categories.length,
+            icon: ShoppingBag,
+        },
+        {
+            title: 'Current Products',
+            value: '+' + currentProduct,
+            icon: ShoppingBag,
+        },
+        {
+            title: 'Current Website',
+            value: '+' + 8,
+            icon: ShoppingBag,
+        },
+        {
+            title: 'Most Products In ',
+            value: '#' + 'Music & Instruments',
+            icon: ShoppingBag,
+        },
+    ];
+
+    const chartData: chartDataProsp[] = categories.map(({ name, product }) => ({
         key: name,
         value: product.length,
     }));
 
-    const analitics: analiticsProsp[] = [
+    const analytics: analiticsProsp[] = [
         {
-            labels: 'Total products',
-            value: categories.data.reduce((sum, { product }) => sum + product.length, 0),
-            icon: ShoppingBag,
-            color: 'bg-primary',
-        },
-        {
-            labels: 'Current category',
-            value: totalCategories,
+            labels: 'Current Brand',
+            value: categories.length,
             icon: Layers,
             color: 'bg-gray-300',
+        },
+        {
+            labels: 'Total Products',
+            value: currentProduct,
+            icon: ShoppingBag,
+            color: 'bg-primary',
         },
     ];
 
     return (
         <ContentLayout
             columns={columnsCategory}
-            chartData={chartData}
             data={categories}
             title="Categories"
             description="Manage your website's product categories and products."
-            chartDescription="How many products in each category"
-            analitics={analitics}
             path="categories.create"
             field="name"
+            stats={stats}
+            analytics={analytics}
+            chartData={chartData}
         />
     );
 };

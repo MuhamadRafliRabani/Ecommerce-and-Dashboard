@@ -1,5 +1,5 @@
+import CardsInfo from '@/components/dashboard/card-info';
 import { Chart } from '@/components/dashboard/chart.ui';
-import Info from '@/components/dashboard/info';
 import { DataTable } from '@/components/dashboard/table';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
@@ -7,7 +7,7 @@ import { columnsDashboard } from '@/lib/columns';
 import { analiticsProsp, BreadcrumbItem, chartDataProsp, InfoDetail, Order, PaginatedResponse } from '@/types';
 import { Head } from '@inertiajs/react';
 import { Box, Clock, DollarSign, Layers, ShoppingBag } from 'lucide-react';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { Category } from './Categories/Index';
 
 export const breadcrumbs: BreadcrumbItem[] = [
@@ -24,14 +24,6 @@ type DashboardsProps = {
 };
 
 export default function Dashboard({ categories, orders }: DashboardsProps) {
-    const { totalAmount, totalPrice, totalCanceled } = useMemo(() => {
-        return {
-            totalAmount: orders.data.reduce((prev, order) => (order.status === 'delivered' ? prev + order.total_price : prev), 0),
-            totalPrice: orders.data.reduce((prev, order) => prev + order.total_price, 0),
-            totalCanceled: orders.data.filter((order) => order.status === 'canceled').length,
-        };
-    }, [orders]);
-
     const chartData: chartDataProsp[] = categories.map(({ name, product }) => ({
         key: name,
         value: product.length,
@@ -52,7 +44,18 @@ export default function Dashboard({ categories, orders }: DashboardsProps) {
         },
     ];
 
-    const dashboardStats: InfoDetail[] = [
+    const { totalAmount, totalPrice, totalCanceled } = useMemo(() => {
+        return {
+            totalAmount: orders.data.reduce((prev, order) => (order.status == 'delivered' ? prev + Number(order.total_price) : prev), 0),
+            totalPrice: orders.data.reduce(
+                (prev, order) => prev + Number(order.total_price) - (order.status === 'cancelled' ? order.total_price : 0),
+                0,
+            ),
+            totalCanceled: orders.data.filter((order) => order.status === 'cancelled').length,
+        };
+    }, [orders]);
+
+    const stats: InfoDetail[] = [
         {
             title: 'Total Orders',
             icon: ShoppingBag,
@@ -79,9 +82,9 @@ export default function Dashboard({ categories, orders }: DashboardsProps) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
             <section className="flex h-full flex-col gap-4 overflow-hidden rounded-xl p-2.5 py-2">
-                <InfoCards stats={dashboardStats} />
+                <CardsInfo stats={stats} />
 
-                <div className="flex w-full flex-col items-center justify-center gap-4 overflow-hidden px-0 md:flex-row">
+                <div className="flex w-full flex-col justify-center gap-4 overflow-hidden px-0 md:flex-row">
                     <ChartSection analytics={analytics} chartData={chartData} />
                     <TransactionTable orders={orders} />
                 </div>
@@ -90,19 +93,9 @@ export default function Dashboard({ categories, orders }: DashboardsProps) {
     );
 }
 
-const InfoCards = ({ stats }: { stats: InfoDetail[] }) => (
-    <div className="grid w-full auto-rows-min justify-items-center gap-2 md:grid-cols-4">
-        {stats.map((item, i) => (
-            <React.Fragment key={i}>
-                <Info index={i} item={item} />
-            </React.Fragment>
-        ))}
-    </div>
-);
-
 const ChartSection = ({ analytics, chartData }: { analytics: analiticsProsp[]; chartData: chartDataProsp[] }) => (
-    <div className="appers-top w-full">
-        <Chart analitics={analytics} chartData={chartData} chartDescription="Show all current products" />
+    <div className="appers-top max-h-fit w-full">
+        <Chart analitics={analytics} chartData={chartData} />
     </div>
 );
 
@@ -115,6 +108,6 @@ const TransactionTable = ({ orders }: { orders: PaginatedResponse<Order> }) => (
             </CardTitle>
             <CardDescription>Transactions in a month</CardDescription>
         </CardHeader>
-        <DataTable columns={columnsDashboard} data={orders.data} links={orders.links} field="amount" title="orders" />
+        <DataTable columns={columnsDashboard} data={orders.data} field="amount" title="orders" />
     </Card>
 );

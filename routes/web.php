@@ -12,16 +12,30 @@ use Inertia\Inertia;
 
 
 Route::get('/', function () {
-    return Inertia::render('auth/login');
+    $servername = "sql210.infinityfree.com";
+    $username = "if0_38478871";
+    $password = "W4BbBbAZQsFZR0y";
+    $dbname = "if0_38478871_Dashboard";
+
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    echo "Connected successfully";
 });
 
+
+Route::get('/test/env', function () {
+    dd(env('DB_DATABASE')); // Dump 'db' variable value one by one
+});
 
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
 
     Route::get('/dashboard', function () {
 
         $categories = Category::with('product')->get();
-        $orders = Order::with(['user', 'product'])->paginate(5);
+        $orders = Order::with(['user', 'product'])->paginate(10);
 
         return Inertia::render('dashboard/Index', ['categories' => $categories, 'orders' => $orders]);
     })->name('dashboard');

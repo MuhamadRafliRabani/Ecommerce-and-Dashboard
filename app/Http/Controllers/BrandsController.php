@@ -12,9 +12,9 @@ class BrandsController extends Controller
 {
     public function index()
     {
-        $brands = Brand::with('product')->paginate(10);
-        $Totalbrands = Brand::count();
-        return Inertia::render('dashboard/Brands/Index', ['brands' => $brands, 'totalbrands' => $Totalbrands]);
+        $brands = Brand::with('product')->latest()->get();
+
+        return Inertia::render('dashboard/Brands/Index', ['brands' => $brands]);
     }
 
     public function create(Request $request)
