@@ -12,17 +12,7 @@ use Inertia\Inertia;
 
 
 Route::get('/', function () {
-    $servername = "sql210.infinityfree.com";
-    $username = "if0_38478871";
-    $password = "W4BbBbAZQsFZR0y";
-    $dbname = "if0_38478871_Dashboard";
-
-    $conn = new mysqli($servername, $username, $password, $dbname);
-
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-    echo "Connected successfully";
+    dd(env('DB_DATABASE'));
 });
 
 
