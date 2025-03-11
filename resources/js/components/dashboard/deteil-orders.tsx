@@ -9,8 +9,6 @@ type OrderDetailsProps<T> = {
 };
 
 const OrderDetails = ({ data }: OrderDetailsProps<Order>) => {
-    console.log('🚀 ~ OrderDetails ~ data:', data);
-
     const order = {
         timeline: [
             { title: 'Order Placed', description: 'Order has been placed', completed: true, status: 'processing' },
@@ -25,15 +23,15 @@ const OrderDetails = ({ data }: OrderDetailsProps<Order>) => {
     };
 
     return (
-        <div className="mx-auto h-auto w-full max-w-xl overflow-y-auto overflow-ellipsis">
+        <div className="mx-auto h-auto max-h-screen w-full max-w-xl overflow-auto overflow-ellipsis md:pb-5">
             <div className="">
-                <h1 className="text-primary ms-10 -mb-4 font-medium">#{data.order_number}</h1>
+                <h1 className="text-primary ms-10 -mb-4 font-medium">#{data.invoice}</h1>
                 <div className="flex items-end justify-between">
                     <div className="flex items-end gap-2">
                         <img src="https://placehold.co/400x400" alt="Product Image" className="size-8 rounded" />
                         <p className="text-primary/90 text-xs font-medium">{data.product?.category?.name || data.product?.name}</p>
                     </div>
-                    <p className="font-medium">${data.total_price.toFixed(2)}</p>
+                    <p className="font-medium">${data.total_price}</p>
                 </div>
             </div>
 

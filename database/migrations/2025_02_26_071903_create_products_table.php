@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->bigInteger('price');
-            $table->string('image')->nullable();
+            $table->string('image')->nullable()->default('https://placehold.co/400x400');
             $table->string('slug');
             $table->string('description')->nullable();
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');

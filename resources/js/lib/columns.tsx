@@ -59,11 +59,13 @@ export const columnsProduct: ColumnDef<Product>[] = [
         ),
         cell: ({ row }) => (
             <div className="width-animated flex w-[150px] space-x-2 truncate whitespace-nowrap md:w-[195px]">
-                <img src="https://placehold.co/400x400" className="size-8 rounded" alt={row.original.name} />
+                <img
+                    src={row.original.image ? 'storage/' + row.original.image : 'https://placehold.co/400x400'}
+                    className="size-8 rounded"
+                    alt={row.original.name}
+                />
                 <div className="-space-y-0.5">
-                    <Link href={route('products.show', row.original.id)} className="block text-sm font-medium tracking-tight">
-                        {row.original.name}
-                    </Link>
+                    <p className="block text-sm font-medium tracking-tight">{row.original.name}</p>
                     <span className="text-primary/80 text-xs tracking-tighter md:tracking-wide">{row.original.category?.name}</span>
                 </div>
             </div>
@@ -91,7 +93,7 @@ export const columnsProduct: ColumnDef<Product>[] = [
             return (
                 <Link
                     href={route('categories.show', row.original.category_id)}
-                    className={`border-slide width-animated [--colorBorder: w-[100px] ${colors[row.original.category?.color || '']}] rounded p-1.5 text-sm [--origin:right] ${colors[row.original.category?.color || '']}`}
+                    className={`border-slide width-animated [--colorBorder: w-[100px] ${colors[row.original.category?.color || '']}] min-w-fit rounded p-1.5 text-sm whitespace-nowrap [--origin:right] md:min-w-16 ${colors[row.original.category?.color || '']}`}
                 >
                     {row.original.category?.name.slice(0, 12)}
                 </Link>
@@ -105,7 +107,7 @@ export const columnsProduct: ColumnDef<Product>[] = [
             return (
                 <Link
                     href={route('brands.show', row.original.brand_id)}
-                    className={`border-slide [--colorBorder: bg-blend-color ${colors[row.original.brand?.color || '']}] rounded p-1.5 text-sm [--origin:right] ${colors[row.original.brand?.color]}`}
+                    className={`border-slide [--colorBorder: whitespace-nowrap bg-blend-color ${colors[row.original.brand?.color || '']}] rounded p-1.5 text-sm [--origin:right] ${colors[row.original.brand?.color]}`}
                 >
                     {row.original.brand?.name}
                 </Link>
@@ -237,7 +239,13 @@ export const columnsBrands: ColumnDef<Brand>[] = [
     {
         header: 'Image',
         cell: ({ row }) => {
-            return <img src={'storage/' + row.original.image} alt={row.original.name} className="size-10 rounded-md object-cover md:size-14" />;
+            return (
+                <img
+                    src={row.original.image ? 'storage/' + row.original.image : 'https://placehold.co/400x400'}
+                    alt={row.original.name}
+                    className="size-10 rounded-md object-cover md:size-14"
+                />
+            );
         },
     },
     {

@@ -22,6 +22,19 @@ class ProductSeeder extends Seeder
             'Sony WH-1000XM4',
             'Nike Air Force 1',
             'Adidas Yeezy Boost 350',
+            'Casio Edifice Chronograph',
+            "Levi\'s Trucker Jacket",
+            'Zara Skinny Jeans',
+            'IKEA Billy Bookshelf',
+            'Dyson Airwrap Styler',
+            'Canon EOS R6',
+            'GoPro Hero 12 Black',
+            'PlayStation 5 Digital Edition',
+            'Nintendo Switch Lite',
+            'Apple iPad Air M2',
+            'Tesla Model 3 Diecast',
+            'LG OLED C2 55-inch TV',
+            'Puma RS-X Sneakers',
         ];
 
         $category_ids = Category::pluck('id')->toArray();
