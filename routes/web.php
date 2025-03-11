@@ -10,15 +10,7 @@ use App\Models\Order;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-
-Route::get('/', function () {
-    dd(env('DB_DATABASE'));
-});
-
-
-Route::get('/test/env', function () {
-    dd(env('DB_DATABASE')); // Dump 'db' variable value one by one
-});
+Route::redirect('/', '/login');
 
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
 

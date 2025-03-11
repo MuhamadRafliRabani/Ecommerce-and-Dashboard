@@ -14,6 +14,8 @@ interface LoginForm {
     email: string;
     password: string;
     remember: boolean;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    [key: string]: any;
 }
 
 interface LoginProps {
