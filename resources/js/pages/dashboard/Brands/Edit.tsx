@@ -14,7 +14,7 @@ const EditBrand = () => {
         { name: 'image', label: 'Image', type: 'file', defaultValue: getBrand.image },
     ];
 
-    return <CreateFieldLayout fields={fields} pathRoute="brands.update" title="Edit brand" id={getBrand.id.toString()} create={false} />;
+    return <CreateFieldLayout fields={fields} pathRoute="brands.update" title="brand" id={getBrand.id.toString()} create={false} />;
 };
 
 export default EditBrand;

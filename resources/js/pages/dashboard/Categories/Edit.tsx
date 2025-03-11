@@ -10,7 +10,7 @@ const EditCategory = () => {
         { name: 'description', label: 'Description', type: 'text', placeholder: category.description, defaultValue: category.description },
     ];
 
-    return <CreateFieldLayout fields={fields} pathRoute="categories.update" title="Edit Category" id={category.id.toString()} create={false} />;
+    return <CreateFieldLayout fields={fields} pathRoute="categories.update" title="Category" id={category.id.toString()} create={false} />;
 };
 
 export default EditCategory;

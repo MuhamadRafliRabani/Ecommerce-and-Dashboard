@@ -3,7 +3,7 @@ import { Input } from '../ui/input';
 
 const InputFilterTable = ({ table, field = 'name', placeholder = 'Filter product name...' }) => {
     return (
-        <div className="relative w-1/2 max-w-100 text-sm">
+        <div className="relative w-3/5 max-w-100 text-sm">
             <Input
                 placeholder={placeholder}
                 value={(table.getColumn(field)?.getFilterValue() as string) ?? ''}

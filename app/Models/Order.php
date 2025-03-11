@@ -21,8 +21,6 @@ class Order extends Model
         'payment_method',
         'shipping_address',
         'shipped_at',
-        'color'
-
     ];
 
     public function user(): BelongsTo

@@ -19,7 +19,7 @@ const UploadImage = ({ data, setData, errors }) => {
 
     return (
         <div>
-            <Label htmlFor="image" className="w-full cursor-pointer">
+            <Label htmlFor="image" className="w-full cursor-pointer bg-yellow-400">
                 {imagePreview ? (
                     <div className="group relative">
                         <img

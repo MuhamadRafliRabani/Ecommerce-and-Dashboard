@@ -315,7 +315,7 @@ export const columnsOrders: ColumnDef<Order>[] = [
                     <Link href={route('products.show', row.original.product_id)} className="block text-sm font-medium tracking-tight">
                         {row.original.product.name}
                     </Link>
-                    <span className="text-primary/80 text-xs tracking-tighter md:tracking-wide">#{row.original.order_number}</span>
+                    <span className="text-primary/80 text-xs tracking-tighter md:tracking-wide">#{row.original.invoice}</span>
                 </div>
             </div>
         ),
@@ -395,9 +395,9 @@ export const columnsOrders: ColumnDef<Order>[] = [
 
 export const columnsDashboard: ColumnDef<Order>[] = [
     {
-        accessorKey: 'order_number',
+        accessorKey: 'invoice',
         header: 'Invoice',
-        cell: ({ row }) => row.original.order_number,
+        cell: ({ row }) => row.original.invoice,
     },
     {
         accessorKey: 'status',

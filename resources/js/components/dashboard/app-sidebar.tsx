@@ -73,7 +73,7 @@ const mainNavItems: NavItem[] = [
 const footerNavItems: subItem[] = [
     {
         title: 'Eccomerce',
-        url: '/eccomerce',
+        url: '/#',
         icon: BookImage,
     },
     {

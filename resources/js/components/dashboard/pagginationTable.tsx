@@ -10,8 +10,8 @@ interface DataTablePaginationProps<TData> {
 export function DataTablePagination<TData>({ table }: DataTablePaginationProps<TData>) {
     return (
         <div className="flex w-full max-w-screen items-center justify-between space-x-6 lg:space-x-8">
-            <div className="flex items-center space-x-2">
-                <p className="text-xs font-medium">Rows per page</p>
+            <div className="flex items-center space-x-2 overflow-auto">
+                <p className="text-xs font-medium whitespace-nowrap">Rows per page</p>
                 <Select
                     value={`${table.getState().pagination.pageSize}`}
                     onValueChange={(value) => {
@@ -30,7 +30,7 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
                     </SelectContent>
                 </Select>
             </div>
-            <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+            <div className="flex w-[100px] items-center justify-center text-sm font-medium whitespace-nowrap">
                 Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
             </div>
             <div className="flex items-center space-x-2">

@@ -110,7 +110,7 @@ export interface Brand {
 
 export interface Order {
     id: string;
-    order_number: string;
+    invoice: string;
     payment_method: string;
     product_id: number;
     product: Product;

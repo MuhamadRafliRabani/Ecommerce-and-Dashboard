@@ -1,7 +1,7 @@
-import Heading from '@/components/dashboard/heading';
 import InputError from '@/components/dashboard/input-error';
 import UploadImage from '@/components/dashboard/upload-image';
 import { Button } from '@/components/ui/button';
+import { CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
@@ -43,11 +43,18 @@ const CreateFieldLayout = ({ fields, title, pathRoute, id, create = true }: Crea
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <form method="POST" onSubmit={handleSubmit} className="h-full w-full gap-4 md:p-4">
-                <Heading title={title} description={'Add a new ' + title.toLowerCase()} />
+            <form method="POST" onSubmit={handleSubmit} className="h-full w-full gap-4 space-y-4 p-4">
+                <CardHeader className="space-y-1 p-0">
+                    <CardTitle>
+                        {create ? 'Create' : 'Edit'} {title}
+                    </CardTitle>
+                    <CardDescription>
+                        {create ? 'Create a new' : 'Edit an existing'} {title.toLowerCase()}
+                    </CardDescription>
+                </CardHeader>
 
                 {fields.map(({ name, label, placeholder, type }, i) => (
-                    <div key={i} className={`mb-4 flex justify-between ${label == 'Image' ? 'hidden' : ''}`}>
+                    <div key={i} className={`mb-4 flex flex-col justify-between space-y-2 md:flex-row ${label == 'Image' ? 'hidden' : ''}`}>
                         <Label htmlFor={name} className="min-w-52">
                             {label} <span className="text-base text-red-400">*</span>
                         </Label>
@@ -65,16 +72,14 @@ const CreateFieldLayout = ({ fields, title, pathRoute, id, create = true }: Crea
                 ))}
 
                 {title == 'Brand' ? (
-                    <div className="flex">
-                        <Label htmlFor="image" className="min-w-52">
+                    <div className="flex w-full flex-col space-y-2 md:flex-row">
+                        <Label className="h-fit min-w-52">
                             Image <span className="text-base text-red-400">*</span>
                         </Label>
-                        <div className="w-full">
-                            <UploadImage data={data} setData={setData} errors={errors} />
-                        </div>
+                        <UploadImage data={data} setData={setData} errors={errors} />
                     </div>
                 ) : null}
-                <Button className="ms-52 mt-4 block" disabled={processing}>
+                <Button className="ms-auto mt-4 block md:ms-52" disabled={processing}>
                     submit
                 </Button>
             </form>

@@ -25,8 +25,8 @@ export function ContentLayout<T>({ title, description, data, columns, stats, pat
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={title} />
-            <div>
-                <CardHeader className="space-y-2 px-3 md:px-4">
+            <div className="-space-y-2">
+                <CardHeader className="space-y-2 px-3 pb-3 md:px-4">
                     <CardTitle className="appers-right border-slide block w-fit [--origin:left]">{title}</CardTitle>
                     <CardDescription
                         className={`appers-right flex max-w-[320px] items-end justify-between text-pretty overflow-ellipsis md:max-w-full md:items-center md:space-x-4 ${stats ? 'md:mb-4' : 'md:-mb-4'}`}
