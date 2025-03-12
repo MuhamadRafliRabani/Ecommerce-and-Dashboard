@@ -36,13 +36,13 @@ export default function AuthSplitLayout({ children, title, description }: AuthLa
             <div className="w-full lg:p-8">
                 <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
                     <Link href={route('dashboard')} className="relative z-20 flex items-center justify-center lg:hidden"></Link>
-                    <div className="flex flex-col items-start gap-2 text-left sm:items-center sm:text-center">
+                    <div className="flex flex-col items-start gap-2 text-center sm:items-center">
                         <img
                             src="logo.png"
-                            className="bg size-14 rounded-md fill-current object-cover text-[var(--foreground)] md:size-14 dark:text-white"
+                            className="bg mx-auto size-14 rounded-md fill-current object-cover text-[var(--foreground)] md:size-14 dark:text-white"
                         />
-                        <h1 className="text-xl font-medium">{title}</h1>
-                        <p className="text-muted-foreground text-sm text-balance">{description}</p>
+                        <h1 className="mx-auto text-xl font-medium">{title}</h1>
+                        <p className="text-muted-foreground text-sm text-pretty">{description}</p>
                     </div>
                     {children}
                 </div>
