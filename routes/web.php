@@ -10,7 +10,15 @@ use App\Models\Order;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::redirect('/', '/login');
+
+Route::get('/', function () {
+    return Inertia::render('ecommerce/Index');
+});
+
+
+Route::get('/test/env', function () {
+    dd(env('DB_DATABASE')); // Dump 'db' variable value one by one
+});
 
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
 

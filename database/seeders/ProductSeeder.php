@@ -45,7 +45,7 @@ class ProductSeeder extends Seeder
             Product::create([
                 'name' => $product,
                 'slug' => Str::slug($product),
-                'image' => strtolower(Str::slug($product)) . '.jpg',
+                'image' => 'https://placehold.co/400x400.png',
                 'price' => rand(100, 2000),
                 'description' => "This is a high-quality $product.",
                 'category_id' => $category_ids[array_rand($category_ids)],
