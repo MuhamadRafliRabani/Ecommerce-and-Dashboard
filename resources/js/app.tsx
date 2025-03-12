@@ -21,7 +21,7 @@ createInertiaApp({
         root.render(<App {...props} />);
     },
     progress: {
-        color: window.matchMedia('(prefers-color-scheme: dark)').matches ? '#ffffff' : '#000000',
+        color: localStorage.getItem('color') || '#FFFFFF',
 
         showSpinner: true,
     },

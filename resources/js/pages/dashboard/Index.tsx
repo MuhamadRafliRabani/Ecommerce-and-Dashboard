@@ -2,7 +2,7 @@ import CardsInfo from '@/components/dashboard/card-info';
 import { Chart } from '@/components/dashboard/chart.ui';
 import { DataTable } from '@/components/dashboard/table';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useAppearance } from '@/hooks/use-appearance';
+import { useColorProgres } from '@/hooks/use-color-progres';
 import AppLayout from '@/layouts/app-layout';
 import { columnsDashboard } from '@/lib/columns';
 import { analiticsProsp, BreadcrumbItem, chartDataProsp, InfoDetail, Order, PaginatedResponse } from '@/types';
@@ -25,7 +25,7 @@ type DashboardsProps = {
 };
 
 export default function Dashboard({ categories, orders }: DashboardsProps) {
-    const { updateAppearance } = useAppearance();
+    const { setColor } = useColorProgres();
     const chartData: chartDataProsp[] = categories.map(({ name, product }) => ({
         key: name,
         value: product.length,
@@ -47,8 +47,8 @@ export default function Dashboard({ categories, orders }: DashboardsProps) {
     ];
 
     useEffect(() => {
-        updateAppearance('light');
-    }, [updateAppearance]);
+        setColor('#000000');
+    }, [setColor]);
 
     const { totalAmount, totalPrice, totalCanceled } = useMemo(() => {
         return {

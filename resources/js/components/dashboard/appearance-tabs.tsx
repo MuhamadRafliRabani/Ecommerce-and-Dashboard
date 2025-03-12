@@ -1,10 +1,12 @@
 import { Appearance, useAppearance } from '@/hooks/use-appearance';
+import { useColorProgres } from '@/hooks/use-color-progres';
 import { cn } from '@/lib/utils';
 import { LucideIcon, Monitor, Moon, Sun } from 'lucide-react';
 import { HTMLAttributes } from 'react';
 
 export default function AppearanceToggleTab({ className = '', ...props }: HTMLAttributes<HTMLDivElement>) {
     const { appearance, updateAppearance } = useAppearance();
+    const { setColor } = useColorProgres();
 
     const tabs: { value: Appearance; icon: LucideIcon; label: string }[] = [
         { value: 'light', icon: Sun, label: 'Light' },
@@ -12,12 +14,20 @@ export default function AppearanceToggleTab({ className = '', ...props }: HTMLAt
         { value: 'system', icon: Monitor, label: 'System' },
     ];
 
+    const handleUpdateAppearance = (value: Appearance) => {
+        setColor(value === 'dark' ? '#ffffff' : '#000000');
+        localStorage.setItem('color', value === 'dark' ? '#ffffff' : '#000000');
+        updateAppearance(value);
+
+        console.log(value);
+    };
+
     return (
         <div className={cn('inline-flex gap-1 rounded-lg bg-neutral-100 p-1 dark:bg-neutral-800', className)} {...props}>
             {tabs.map(({ value, icon: Icon, label }) => (
                 <button
                     key={value}
-                    onClick={() => updateAppearance(value)}
+                    onClick={() => handleUpdateAppearance(value)}
                     className={cn(
                         'flex items-center rounded-md px-3.5 py-1.5 transition-colors',
                         appearance === value

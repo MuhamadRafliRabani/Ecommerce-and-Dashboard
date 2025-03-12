@@ -1,20 +1,16 @@
 import { Button } from '@/components/ui/button';
-import { useAppearance } from '@/hooks/use-appearance';
+import { useColorProgres } from '@/hooks/use-color-progres';
 import { type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { useEffect } from 'react';
-import { toast } from 'sonner';
 
 export default function Index() {
     const { auth } = usePage<SharedData>().props;
-    const { updateAppearance } = useAppearance();
+    const { setColor } = useColorProgres();
 
     useEffect(() => {
-        updateAppearance('dark');
-        if (!auth || auth?.user?.role === 'user') {
-            toast.info("User can't log in to the dashboard");
-        }
-    }, [updateAppearance, auth]);
+        setColor('#ffffff');
+    }, [setColor]);
 
     return (
         <>
@@ -29,14 +25,14 @@ export default function Index() {
                             <>
                                 <Link
                                     href={route('dashboard')}
-                                    className="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#EDEDEC] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:hover:border-[#62605b]"
+                                    className="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#EDEDEC] hover:border-[#1915014a] hover:underline dark:border-[#3E3E3A] dark:hover:border-[#62605b]"
                                 >
                                     Dashboard
                                 </Link>
                                 <Link
                                     method="post"
                                     href={route('logout')}
-                                    className="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#EDEDEC] duration-150 hover:border-[#1915014a] hover:bg-red-500 dark:border-[#3E3E3A] dark:hover:border-[#62605b]"
+                                    className="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#EDEDEC] duration-150 hover:border-[#1915014a] hover:bg-red-500 hover:underline dark:border-[#3E3E3A] dark:hover:border-[#62605b]"
                                 >
                                     Log out
                                 </Link>
@@ -45,13 +41,13 @@ export default function Index() {
                             <>
                                 <Link
                                     href={route('login')}
-                                    className="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#EDEDEC] hover:border-[#19140035] dark:hover:border-[#3E3E3A]"
+                                    className="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#EDEDEC] hover:border-[#19140035] hover:underline dark:hover:border-[#3E3E3A]"
                                 >
                                     Log in
                                 </Link>
                                 <Link
                                     href={route('register')}
-                                    className="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#EDEDEC] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:hover:border-[#62605b]"
+                                    className="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#EDEDEC] hover:border-[#1915014a] hover:underline dark:border-[#3E3E3A] dark:hover:border-[#62605b]"
                                 >
                                     Register
                                 </Link>
@@ -62,10 +58,10 @@ export default function Index() {
                 <div className="flex min-h-screen items-center justify-center px-3 lg:px-12">
                     <main className="flex w-full max-w-6xl flex-col items-center justify-center md:-mt-32 md:max-w-7xl lg:flex-row">
                         <div className="-mt-16 space-y-4 lg:w-1/2">
-                            <Button variant="link" className="-mb-2 ps-0 text-white/80 underline">
+                            <Button variant="link" className="-mb-2 ps-0 tracking-tight text-white/80 underline">
                                 <Link href={route('dashboard')}>Dashboard</Link>
                             </Button>
-                            <h1 className="w-full text-5xl font-bold tracking-tight md:text-7xl">Welcome to My Website.</h1>
+                            <h1 className="w-full text-5xl font-bold tracking-tight md:text-7xl">Welcome to My Dashboard. </h1>
                             <p className="text-lg text-gray-300">A dashboard that provides detailed insights. 🚀</p>
                         </div>
                         <div className="mt-2 flex justify-center lg:mt-0 lg:w-1/3">
