@@ -25,13 +25,15 @@ const OrderDetails = ({ data }: OrderDetailsProps<Order>) => {
     return (
         <div className="mx-auto h-auto max-h-screen w-full max-w-xl overflow-auto overflow-ellipsis md:pb-5">
             <div className="">
-                <h1 className="text-primary ms-10 -mb-4 font-medium">#{data.invoice}</h1>
+                <h1 className="text-primary ms-10 -mb-4 text-sm font-medium md:text-[0.91rem]">#{data.invoice}</h1>
                 <div className="flex items-end justify-between">
                     <div className="flex items-end gap-2">
                         <img src="https://placehold.co/400x400" alt="Product Image" className="size-8 rounded" />
-                        <p className="text-primary/90 text-xs font-medium">{data.product?.category?.name || data.product?.name}</p>
+                        <p className="text-primary/90 text-xs font-medium whitespace-nowrap">
+                            {data.product?.category?.name || data.product?.name.slice(0, 16)}
+                        </p>
                     </div>
-                    <p className="font-medium">${data.total_price}</p>
+                    <p className="text-xs font-medium md:text-base">${data.total_price}</p>
                 </div>
             </div>
 

@@ -2,12 +2,13 @@ import CardsInfo from '@/components/dashboard/card-info';
 import { Chart } from '@/components/dashboard/chart.ui';
 import { DataTable } from '@/components/dashboard/table';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useAppearance } from '@/hooks/use-appearance';
 import AppLayout from '@/layouts/app-layout';
 import { columnsDashboard } from '@/lib/columns';
 import { analiticsProsp, BreadcrumbItem, chartDataProsp, InfoDetail, Order, PaginatedResponse } from '@/types';
 import { Head } from '@inertiajs/react';
 import { Box, Clock, DollarSign, Layers, ShoppingBag } from 'lucide-react';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Category } from './Categories/Index';
 
 export const breadcrumbs: BreadcrumbItem[] = [
@@ -24,6 +25,7 @@ type DashboardsProps = {
 };
 
 export default function Dashboard({ categories, orders }: DashboardsProps) {
+    const { updateAppearance } = useAppearance();
     const chartData: chartDataProsp[] = categories.map(({ name, product }) => ({
         key: name,
         value: product.length,
@@ -43,6 +45,10 @@ export default function Dashboard({ categories, orders }: DashboardsProps) {
             color: 'bg-gray-300',
         },
     ];
+
+    useEffect(() => {
+        updateAppearance('light');
+    }, [updateAppearance]);
 
     const { totalAmount, totalPrice, totalCanceled } = useMemo(() => {
         return {

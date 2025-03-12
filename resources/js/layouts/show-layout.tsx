@@ -1,7 +1,6 @@
 import { DataTable } from '@/components/dashboard/table';
 import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { breadcrumbs } from '@/pages/dashboard/Index';
-import { PaginationLinkProsp } from '@/types';
 import { ColumnDef } from '@tanstack/react-table';
 import AppLayout from './app-layout';
 
@@ -9,10 +8,9 @@ interface ShowLayout<T> {
     data: T[];
     columns: ColumnDef<T>[];
     detail: string;
-    links: PaginationLinkProsp[];
 }
 
-const ShowLayout = ({ data, columns, links, detail }) => {
+const ShowLayout = ({ data, columns, detail }) => {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <CardHeader>
@@ -21,7 +19,7 @@ const ShowLayout = ({ data, columns, links, detail }) => {
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                <DataTable columns={columns} data={data} links={links} field="name" title="product" />
+                <DataTable columns={columns} data={data} field="name" title="product" />
             </CardContent>
         </AppLayout>
     );
